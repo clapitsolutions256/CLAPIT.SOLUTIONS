@@ -74,8 +74,8 @@ const LoopVideo: React.FC = () => {
 
   return (
     <section className="px-3 pb-3 pt-24 sm:px-4">
-      <div className="relative mx-auto w-full max-w-[1440px] overflow-hidden rounded-3xl bg-ink">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div className="relative isolate mx-auto w-full max-w-[1440px] overflow-hidden rounded-3xl bg-ink [clip-path:inset(0_round_1.5rem)]">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
           {SLIDES.map((src: string, index: number) => (
             <NextImage
               key={src}

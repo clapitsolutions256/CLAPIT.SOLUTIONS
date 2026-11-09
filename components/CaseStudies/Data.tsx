@@ -37,7 +37,12 @@ function Media({ images, url }: { images: Img[]; url?: string }) {
             {phones.map((img, i) => (
               <RevealItem
                 key={i}
-                className={cn("w-[44%] sm:w-[30%] max-w-[240px]", i % 2 === 1 && "sm:mt-10")}
+                className={cn(
+                  phones.length === 1
+                    ? "w-[70%] max-w-[280px] sm:w-[45%]"
+                    : "w-[44%] max-w-[240px] sm:w-[30%]",
+                  i % 2 === 1 && "sm:mt-10"
+                )}
               >
                 <PhoneFrame src={img.src} alt={img.alt} className="mx-auto" />
               </RevealItem>

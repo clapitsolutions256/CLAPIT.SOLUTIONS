@@ -342,7 +342,10 @@ export const allCaseStudies: (CaseStudy & {
             "'New Arrivals' placed right after the hero for fast discovery.",
             "Announcement bar: '100% original', 'first check, then pay' and nationwide delivery."
           ],
-          images: [{ src: IMAGES.Levish1, alt: "Levish home page", isMobile: false }]
+          images: [
+            { src: IMAGES.Levish1, alt: "Levish home page", isMobile: false },
+            { src: IMAGES.LevishMobile, alt: "Levish on mobile", isMobile: true }
+          ]
         },
         {
           title: "Product Experience",

@@ -68,11 +68,11 @@ export function PhoneFrame({
         className
       )}
     >
-      <span
-        className="absolute left-1/2 top-4 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-ink"
-        aria-hidden="true"
-      />
-      <div className="overflow-hidden rounded-[1.9rem] bg-white">
+      <div className="overflow-hidden rounded-[1.9rem] bg-black">
+        {/* Status-bar strip so the dynamic island never covers the screenshot */}
+        <div className="relative flex h-7 items-center justify-center" aria-hidden="true">
+          <span className="h-4 w-16 rounded-full bg-ink ring-1 ring-white/10" />
+        </div>
         <Image
           src={src}
           alt={alt}

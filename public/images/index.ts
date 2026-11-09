@@ -86,6 +86,7 @@ import Levish3 from "./levish3.jpg";
 import Empulse3 from "./empulse3.jpg";
 import Empulse4 from "./empulse4.jpg";
 import EmpulseMobile from "./empulse-mobile.jpg";
+import LevishMobile from "./levish-mobile.jpg";
 import XMarketplace3 from "./xmarketplace3.jpg";
 import XMarketplace4 from "./xmarketplace4.jpg";
 import XMarketplace5 from "./xmarketplace5.jpg";
@@ -244,6 +245,7 @@ export const IMAGES: Record<string, any> = {
   Empulse3,
   Empulse4,
   EmpulseMobile,
+  LevishMobile,
   XMarketplace3,
   XMarketplace4,
   XMarketplace5,

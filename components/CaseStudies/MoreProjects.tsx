@@ -24,12 +24,12 @@ export default function MoreProjects({
       <div className="container">
         <RevealGroup className="grid gap-5 md:grid-cols-2" stagger={0.1}>
           {items.map(({ study, label, dir }) => (
-            <RevealItem key={study.id}>
+            <RevealItem key={study.id} className="min-w-0">
               <Link
                 href={`/case-studies/${study.id}`}
                 className="group flex items-center gap-5 overflow-hidden rounded-3xl border border-zinc-200 bg-white p-4 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-card-hover sm:p-5"
               >
-                <div className="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-zinc-100 sm:h-28 sm:w-40">
+                <div className="relative h-20 w-24 flex-shrink-0 sm:h-28 overflow-hidden rounded-2xl bg-zinc-100 sm:w-40">
                   {study.image && (
                     <Image
                       src={study.image}

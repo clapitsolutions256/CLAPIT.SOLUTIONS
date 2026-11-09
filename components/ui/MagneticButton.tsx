@@ -41,7 +41,7 @@ export default function MagneticButton({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="relative flex h-60 w-60 items-center justify-center"
+      className="relative flex h-44 w-44 items-center justify-center sm:h-60 sm:w-60"
     >
       <motion.div style={{ x: sx, y: sy }} className="relative">
         <div
@@ -50,13 +50,13 @@ export default function MagneticButton({
         />
         <Link
           href={href}
-          className="group relative flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-full bg-secondary text-white shadow-[0_18px_48px_rgba(219,26,26,0.45)] transition-colors duration-300 hover:bg-brand-600"
+          className="group relative flex h-32 w-32 flex-col items-center justify-center gap-2 rounded-full sm:h-40 sm:w-40 bg-secondary text-white shadow-[0_18px_48px_rgba(219,26,26,0.45)] transition-colors duration-300 hover:bg-brand-600"
         >
           <span
             className="absolute inset-2 animate-[spin_14s_linear_infinite] rounded-full border-2 border-dashed border-white/35 motion-reduce:animate-none"
             aria-hidden="true"
           />
-          <span className="relative max-w-[6.5rem] text-center font-heading text-lg font-semibold leading-tight">
+          <span className="relative max-w-[6.5rem] text-center font-heading text-base font-semibold leading-tight sm:text-lg">
             {label}
           </span>
           <ArrowRight

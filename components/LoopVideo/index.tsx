@@ -78,7 +78,7 @@ const LoopVideo: React.FC = () => {
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
           {SLIDES.map((src: string, index: number) => (
             <NextImage
-              key={src}
+              key={index}
               src={src}
               alt=""
               fill

@@ -107,7 +107,7 @@ function StackCard({
           className="group grid lg:min-h-[520px] lg:grid-cols-2"
           aria-label={`Read the ${study.title} case study`}
         >
-          <div className="flex flex-col justify-between gap-8 p-7 sm:p-10 lg:p-12">
+          <div className="flex flex-col justify-between gap-5 p-5 sm:gap-8 sm:p-10 lg:p-12">
             <div>
               <div className="flex items-center justify-between">
                 <span className="font-heading text-sm font-semibold text-zinc-400">
@@ -126,12 +126,12 @@ function StackCard({
                   </ul>
                 )}
               </div>
-              <h3 className="mt-8 font-heading text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              <h3 className="mt-4 font-heading text-2xl font-semibold leading-tight tracking-tight text-ink sm:mt-8 sm:text-4xl lg:text-5xl">
                 {study.title}
               </h3>
-              <p className="mt-4 text-lg leading-relaxed text-zinc-600">{study.subtitle}</p>
+              <p className="mt-2 text-base leading-relaxed text-zinc-600 sm:mt-4 sm:text-lg">{study.subtitle}</p>
               {study.description && (
-                <p className="mt-4 line-clamp-3 text-[15px] leading-relaxed text-zinc-500">
+                <p className="mt-4 hidden text-[15px] leading-relaxed text-zinc-500 sm:line-clamp-3">
                   {study.description}
                 </p>
               )}
@@ -139,7 +139,7 @@ function StackCard({
 
             <div>
               {study.technologies && study.technologies.length > 0 && (
-                <ul className="mb-8 flex flex-wrap gap-2">
+                <ul className="mb-8 hidden flex-wrap gap-2 sm:flex">
                   {study.technologies.slice(0, 5).map((tech) => (
                     <li
                       key={tech}
@@ -160,7 +160,7 @@ function StackCard({
             </div>
           </div>
 
-          <div className="relative min-h-[280px] overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-brand-50 sm:min-h-[360px]">
+          <div className="relative order-first min-h-[200px] overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-brand-50 sm:min-h-[360px] lg:order-none">
             <div
               className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"
               aria-hidden="true"
@@ -172,7 +172,7 @@ function StackCard({
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority={index === 0}
-                className="object-contain p-8 drop-shadow-xl transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-12"
+                className="object-contain p-5 drop-shadow-xl transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-12"
               />
             )}
           </div>

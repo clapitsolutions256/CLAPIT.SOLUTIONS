@@ -6,13 +6,13 @@ export default function FloatingContactButton() {
   return (
     <Link
       href="/contact-us"
-      className="fixed bottom-6 right-6 z-50 md:hidden lg:hidden"
+      className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-4 z-50 md:hidden"
       aria-label="Contact Us"
     >
-      <div className="w-14 h-14 bg-secondary rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary shadow-[0_8px_24px_rgba(219,26,26,0.4)] ring-4 ring-white/70 transition-transform duration-200 active:scale-95">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-white"
+          className="h-5 w-5 text-white"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

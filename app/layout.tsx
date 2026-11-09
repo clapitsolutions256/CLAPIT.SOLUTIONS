@@ -161,7 +161,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${heading.variable} ${body.variable} ${futura.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${heading.variable} ${body.variable} ${futura.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         <script

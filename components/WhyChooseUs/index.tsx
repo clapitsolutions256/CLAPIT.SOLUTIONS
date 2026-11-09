@@ -57,7 +57,7 @@ const BENEFITS = [
 function IntroPanel() {
   const reduce = useReducedMotion();
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6 pt-16">
       {/* Slow-orbiting rings */}
       {[560, 820, 1080].map((size, i) => (
         <motion.div
@@ -85,7 +85,7 @@ function IntroPanel() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }}
-          className="mt-8"
+          className="mt-6 sm:mt-8"
         >
           <motion.div
             variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.6 } } }}
@@ -124,12 +124,12 @@ function IntroPanel() {
         </motion.div>
 
         <Reveal delay={0.25}>
-          <p className="mx-auto mt-8 max-w-2xl text-lg text-zinc-600 sm:text-xl">
+          <p className="mx-auto mt-6 max-w-2xl text-base text-zinc-600 sm:mt-8 sm:text-xl">
             A decade of shipping products for startups and enterprises — here&apos;s
             what sets our team apart.
           </p>
         </Reveal>
-        <Reveal delay={0.4} className="mt-10 hidden items-center justify-center gap-3 text-sm font-medium text-zinc-500 lg:flex">
+        <Reveal delay={0.4} className="mt-8 flex items-center justify-center gap-3 text-sm font-medium text-zinc-500 sm:mt-10 motion-reduce:hidden">
           Keep scrolling
           <motion.span
             animate={reduce ? undefined : { x: [0, 8, 0] }}
@@ -146,24 +146,24 @@ function IntroPanel() {
 /* ---------- Panel 2: pillars ---------- */
 function PillarsPanel() {
   return (
-    <div className="container grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-0">
+    <div className="container grid items-center gap-5 pb-14 pt-24 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:py-0">
       <div>
         <Reveal>
-          <p className="eyebrow mb-4">Innovation meets excellence</p>
+          <p className="eyebrow mb-3 sm:mb-4">Innovation meets excellence</p>
         </Reveal>
         <Reveal delay={0.1}>
-          <h3 className="font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
+          <h3 className="font-heading text-[1.7rem] font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl">
             Driven by <span className="text-secondary">innovation</span>, built on craft
           </h3>
         </Reveal>
         <Reveal delay={0.2}>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-zinc-600">
+          <p className="mt-6 hidden max-w-lg text-lg leading-relaxed text-zinc-600 sm:block">
             Combining technical expertise with creative vision, we deliver
             solutions that don&apos;t just meet your needs — they exceed
             expectations and drive measurable results.
           </p>
         </Reveal>
-        <RevealGroup className="mt-8 flex flex-wrap gap-2" delay={0.3}>
+        <RevealGroup className="mt-8 hidden flex-wrap gap-2 sm:flex" delay={0.3}>
           {["Web Development", "Mobile Apps", "Cloud Solutions", "AI Integration"].map((t) => (
             <RevealItem key={t}>
               <span className="inline-flex rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-secondary hover:text-secondary">
@@ -174,24 +174,24 @@ function PillarsPanel() {
         </RevealGroup>
       </div>
 
-      <RevealGroup className="grid gap-4" stagger={0.12}>
+      <RevealGroup className="grid gap-3 sm:gap-4" stagger={0.12}>
         {PILLARS.map((p) => (
           <RevealItem key={p.title}>
-            <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-secondary/40 hover:shadow-card-hover">
-              <div className="flex items-start gap-5">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-brand-50 text-secondary transition-colors duration-300 group-hover:bg-secondary group-hover:text-white">
-                  <p.icon className="h-6 w-6" aria-hidden="true" />
+            <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-4 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-secondary/40 hover:shadow-card-hover sm:p-6">
+              <div className="flex items-start gap-4 sm:gap-5">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-xl bg-brand-50 text-secondary transition-colors duration-300 group-hover:bg-secondary group-hover:text-white">
+                  <p.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </div>
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-4">
-                    <h4 className="text-lg font-semibold text-ink">{p.title}</h4>
-                    <span className="font-heading text-2xl font-semibold text-secondary">
+                    <h4 className="text-base font-semibold text-ink sm:text-lg">{p.title}</h4>
+                    <span className="font-heading text-xl font-semibold text-secondary sm:text-2xl">
                       <CountUp value={`${p.share}%`} />
                     </span>
                   </div>
-                  <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-600">{p.desc}</p>
+                  <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-zinc-600 sm:mt-1.5 sm:line-clamp-none sm:text-[15px]">{p.desc}</p>
                   {/* Share-of-focus bar fills on reveal */}
-                  <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-100 sm:mt-4">
                     <motion.div
                       className="h-full rounded-full bg-gradient-to-r from-secondary to-lightMedium"
                       initial={{ width: 0 }}
@@ -220,20 +220,20 @@ function ProofPanel() {
       />
       <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-secondary/25 blur-3xl" aria-hidden="true" />
 
-      <div className="container relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-0">
+      <div className="container relative grid items-center gap-8 pb-14 pt-24 lg:grid-cols-2 lg:gap-12 lg:py-0">
         <div>
           <Reveal>
             <p className="eyebrow mb-4">Proven results</p>
           </Reveal>
           <Reveal delay={0.1}>
-            <h3 className="font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl">
+            <h3 className="font-heading text-[1.9rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl">
               Numbers that speak for themselves
             </h3>
           </Reveal>
-          <RevealGroup className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10" stagger={0.1}>
+          <RevealGroup className="mt-7 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:mt-10" stagger={0.1}>
             {STATS.map((s) => (
-              <RevealItem key={s.label} className="bg-ink p-6 transition-colors duration-300 hover:bg-ink-800">
-                <span className="block font-heading text-4xl font-semibold text-white sm:text-5xl">
+              <RevealItem key={s.label} className="bg-ink p-5 transition-colors duration-300 hover:bg-ink-800 sm:p-6">
+                <span className="block font-heading text-3xl font-semibold text-white sm:text-5xl">
                   <CountUp value={s.value} />
                 </span>
                 <span className="mt-2 block text-sm text-zinc-400">{s.label}</span>
@@ -242,7 +242,7 @@ function ProofPanel() {
           </RevealGroup>
         </div>
 
-        <Reveal delay={0.15} y={40} className="relative mx-auto w-full max-w-lg">
+        <Reveal delay={0.15} y={40} className="relative mx-auto hidden w-full max-w-[220px] [@media(min-height:760px)]:block sm:block sm:max-w-lg">
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-secondary/40 to-lightMedium/20 blur-2xl" aria-hidden="true" />
           <motion.div
             whileHover={{ rotate: -1, scale: 1.02 }}
@@ -266,7 +266,7 @@ function ProofPanel() {
 /* ---------- Panel 4: call to action ---------- */
 function CtaPanel() {
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6 py-20 lg:py-0">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-5 pb-12 pt-24 lg:py-0">
       <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10" aria-hidden="true" />
       <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" aria-hidden="true" />
 
@@ -275,7 +275,7 @@ function CtaPanel() {
           <p className="eyebrow">Ready to get started?</p>
         </Reveal>
         <Reveal delay={0.1}>
-          <h3 className="mt-5 font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+          <h3 className="mt-4 font-heading text-[1.9rem] font-semibold leading-[1.08] tracking-tight text-white sm:mt-5 sm:text-6xl">
             Let&apos;s build something{" "}
             <span className="bg-gradient-to-r from-secondary to-lightMedium bg-clip-text text-transparent">
               extraordinary
@@ -284,19 +284,19 @@ function CtaPanel() {
           </h3>
         </Reveal>
 
-        <RevealGroup className="mt-10 grid w-full max-w-3xl grid-cols-2 gap-3 md:grid-cols-4" stagger={0.08} delay={0.2}>
+        <RevealGroup className="mt-6 grid w-full max-w-3xl grid-cols-2 gap-2.5 sm:mt-10 sm:gap-3 md:grid-cols-4" stagger={0.08} delay={0.2}>
           {BENEFITS.map((b) => (
             <RevealItem key={b.label}>
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors duration-300 hover:border-secondary/50 hover:bg-white/[0.07]">
+              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-left sm:p-4 transition-colors duration-300 hover:border-secondary/50 hover:bg-white/[0.07]">
                 <b.icon className="h-5 w-5 text-secondary" aria-hidden="true" />
-                <p className="mt-3 text-sm font-semibold text-white">{b.label}</p>
+                <p className="mt-2 text-[13px] font-semibold text-white sm:mt-3 sm:text-sm">{b.label}</p>
                 <p className="mt-0.5 text-xs text-zinc-400">{b.desc}</p>
               </div>
             </RevealItem>
           ))}
         </RevealGroup>
 
-        <Reveal delay={0.35} className="mt-4">
+        <Reveal delay={0.35} className="mt-1 sm:mt-4">
           <MagneticButton href="/contact-us" />
         </Reveal>
       </div>

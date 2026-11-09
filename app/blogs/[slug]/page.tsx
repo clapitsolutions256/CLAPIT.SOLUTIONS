@@ -58,7 +58,7 @@ export default async function BlogPage({
   ];
 
   return (
-    <div className="container mx-auto px-12 py-8">
+    <div className="container mx-auto px-4 py-8 sm:px-8 lg:px-12">
       <ArticleSchema
         title={blog.title || "Blog Post"}
         description={blog.description || ""}

@@ -72,6 +72,21 @@
   }
 }
 
+/* Never let anything widen the page on phones (iOS ignores overflow-x on body).
+   'clip' (unlike 'hidden') doesn't create a scroll container, so sticky still works. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Long tables in articles scroll horizontally inside their own box */
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Thin, unobtrusive scrollbar (was hidden entirely, which hurts usability) */
 html {
   scrollbar-width: thin;
@@ -112,6 +127,28 @@ html {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

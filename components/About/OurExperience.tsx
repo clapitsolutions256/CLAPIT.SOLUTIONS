@@ -12,7 +12,7 @@ export default function OurExperience() {
       >
         Our Experience
       </div>
-      <div className="max-w-5xl mx-auto relative flex flex-col items-center">
+      <div className="max-w-5xl mx-auto relative flex flex-col items-center overflow-x-clip px-1">
         <div className="absolute w-[2px] h-full bg-secondary left-5 md:left-1/2 transform -translate-x-1/2"></div>
 
         {experiences.map((exp, index) => {

@@ -82,6 +82,21 @@ import Empulse1 from "./empulse1.jpg";
 import Empulse2 from "./empulse2.jpg";
 import XMarketplace1 from "./xmarketplace1.jpg";
 import XMarketplace2 from "./xmarketplace2.jpg";
+import Levish3 from "./levish3.jpg";
+import Empulse3 from "./empulse3.jpg";
+import Empulse4 from "./empulse4.jpg";
+import EmpulseMobile from "./empulse-mobile.jpg";
+import XMarketplace3 from "./xmarketplace3.jpg";
+import XMarketplace4 from "./xmarketplace4.jpg";
+import XMarketplace5 from "./xmarketplace5.jpg";
+import Staff0 from "./staff0.jpg";
+import Staff1 from "./staff1.jpg";
+import Staff2 from "./staff2.jpg";
+import Staff3 from "./staff3.jpg";
+import Staff4 from "./staff4.jpg";
+import Staff5 from "./staff5.jpg";
+import Staff6 from "./staff6.jpg";
+import Staff7 from "./staff7.jpg";
 import CtaContact from "./ctacontact_img.webp";
 import Genativeai from "./genativeai.jpg";
 import WebAi from "./WEBAI.jpg";
@@ -225,6 +240,21 @@ export const IMAGES: Record<string, any> = {
   Empulse2,
   XMarketplace1,
   XMarketplace2,
+  Levish3,
+  Empulse3,
+  Empulse4,
+  EmpulseMobile,
+  XMarketplace3,
+  XMarketplace4,
+  XMarketplace5,
+  Staff0,
+  Staff1,
+  Staff2,
+  Staff3,
+  Staff4,
+  Staff5,
+  Staff6,
+  Staff7,
   CtaContact,
   Genativeai,
   WebAi,

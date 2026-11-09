@@ -1,217 +1,150 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React from "react";
+import { Check } from "lucide-react";
 import { CaseStudy } from "../types";
+import { cn } from "@/utilities/ui";
+import { Reveal, RevealGroup, RevealItem } from "../ui/Reveal";
+import { BrowserFrame, PhoneFrame } from "./Frames";
 
-const IPhoneFrame = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative w-[300px] h-[600px] rounded-[45px] bg-black p-3 shadow-xl">
-    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-[25px] bg-black rounded-b-2xl z-20">
-      <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gray-800 rounded-full"></div>
-    </div>
-    <div className="w-full h-full bg-white rounded-[35px] overflow-hidden">
-      {children}
-    </div>
-  </div>
-);
+type Section = NonNullable<CaseStudy["data"]>["sections"][number];
+type Img = { src: any; alt: string; isMobile?: boolean };
 
-export default function Data({ data }: { data: CaseStudy["data"] }) {
-  const [sliderIndices, setSliderIndices] = useState<number[]>([]);
-
-  useEffect(() => {
-    if (data?.sections?.length) {
-      setSliderIndices(new Array(data.sections.length).fill(0));
-    }
-  }, [data?.sections]);
-
-  useEffect(() => {
-    const intervals: NodeJS.Timeout[] = [];
-
-    data?.sections?.forEach((section, i) => {
-      if (section.sliderImages?.length) {
-        const interval = setInterval(() => {
-          setSliderIndices((prev) => {
-            const newIndices = [...prev];
-            newIndices[i] =
-              section.sliderImages && section.sliderImages.length > 0
-                ? (newIndices[i] + 1) % section.sliderImages.length
-                : 0;
-            return newIndices;
-          });
-        }, 3000);
-        intervals.push(interval);
-      }
-    });
-
-    return () => {
-      intervals.forEach((interval) => clearInterval(interval));
-    };
-  }, [data?.sections]);
+function Media({ images, url }: { images: Img[]; url?: string }) {
+  const phones = images.filter((i) => i.isMobile);
+  const desktops = images.filter((i) => !i.isMobile);
 
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-6xl mx-auto">
-        {data?.sections?.map((section, sectionIndex) => (
-          <div
-            key={sectionIndex}
-            className="mb-16 sm:mb-20 last:mb-0"
-          >
-            {section.title && (
-              <h2 className="text-2xl sm:text-3xl md:text-4xl text-dark font-bold mb-4 sm:mb-6">
-                {section.title}
-              </h2>
-            )}
+    <div className="space-y-6">
+      {desktops.length > 0 && (
+        <>
+          <Reveal y={40}>
+            <BrowserFrame src={desktops[0].src} alt={desktops[0].alt} url={url} />
+          </Reveal>
+          {desktops.length > 1 && (
+            <RevealGroup className="grid gap-6 sm:grid-cols-2" stagger={0.1}>
+              {desktops.slice(1).map((img, i) => (
+                <RevealItem key={i}>
+                  <BrowserFrame src={img.src} alt={img.alt} sizes="(max-width: 640px) 100vw, 30vw" />
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          )}
+        </>
+      )}
 
-            {section.description && (
-              <p className="text-base sm:text-lg md:text-xl text-medium mb-6 sm:mb-8 leading-relaxed">
-                {section.description}
-              </p>
-            )}
+      {phones.length > 0 && (
+        <div className="rounded-3xl bg-gradient-to-br from-zinc-100 via-zinc-50 to-brand-50 px-4 py-10 sm:px-8">
+          <RevealGroup className="flex flex-wrap items-start justify-center gap-5 sm:gap-8" stagger={0.12}>
+            {phones.map((img, i) => (
+              <RevealItem
+                key={i}
+                className={cn("w-[44%] sm:w-[30%] max-w-[240px]", i % 2 === 1 && "sm:mt-10")}
+              >
+                <PhoneFrame src={img.src} alt={img.alt} className="mx-auto" />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      )}
+    </div>
+  );
+}
 
-            {section.subDescriptions && section.subDescriptions.length > 0 && (
-              <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10">
-                {section.subDescriptions.map((text, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="flex-shrink-0 w-2 h-2 rounded-full bg-secondary mt-2"></div>
-                    <p className="text-base sm:text-lg text-medium leading-relaxed flex-1">
-                      {text}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
+function Feature({
+  section,
+  index,
+  url,
+}: {
+  section: Section;
+  index: number;
+  url?: string;
+}) {
+  const images: Img[] = [...(section.images ?? []), ...(section.sliderImages ?? [])];
+  const hasMedia = images.length > 0 || !!section.video;
+  const flip = index % 2 === 1;
 
-            {section.images && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-10">
-                {section.images.map((image, index) => (
-                  <div key={index} className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    {image.isMobile ? (
-                      <div className="flex justify-center bg-gray-50 p-4">
-                        <IPhoneFrame>
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            height={600}
-                            width={300}
-                            className="w-full h-full object-cover"
-                          />
-                        </IPhoneFrame>
-                      </div>
-                    ) : (
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        height={500}
-                        width={500}
-                        className="w-full h-auto object-cover"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+  const text = (
+    <div className={cn(hasMedia && "lg:sticky lg:top-28")}>
+      <Reveal>
+        <span className="font-heading text-sm font-semibold text-secondary">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        {section.title && (
+          <h3 className="mt-2 font-heading text-2xl font-semibold leading-tight tracking-tight text-ink sm:text-3xl">
+            {section.title}
+          </h3>
+        )}
+      </Reveal>
+      {section.description && (
+        <Reveal delay={0.08}>
+          <p className="mt-4 text-base leading-relaxed text-zinc-600 sm:text-lg">{section.description}</p>
+        </Reveal>
+      )}
+      {section.subDescriptions && section.subDescriptions.length > 0 && (
+        <RevealGroup
+          as="ul"
+          className={cn("mt-6 grid gap-3", !hasMedia && "sm:grid-cols-2")}
+          stagger={0.06}
+          delay={0.1}
+        >
+          {section.subDescriptions.map((item, i) => (
+            <RevealItem as="li" key={i} className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-50 text-secondary">
+                <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
+              </span>
+              <span className="text-[15px] leading-relaxed text-zinc-700">
+                {item.replace(/^✓\s*/, "")}
+              </span>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      )}
+    </div>
+  );
 
-            {section.video && (
-              <div className="mt-8 sm:mt-10 rounded-2xl overflow-hidden shadow-2xl">
-                {section.video.isMobile ? (
-                  <div className="flex justify-center bg-gray-50 p-8">
-                    <IPhoneFrame>
-                      <video
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                      >
-                        <source src={section.video.src} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </IPhoneFrame>
-                  </div>
-                ) : (
-                  <video
-                    className="w-full h-auto"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                  >
-                    <source src={section.video.src} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                )}
-              </div>
-            )}
+  if (!hasMedia) {
+    return (
+      <div className="rounded-3xl border border-zinc-200 bg-background p-7 sm:p-10">{text}</div>
+    );
+  }
 
-            {section.sliderImages && section.sliderImages.length > 0 && (
-              <div className="mt-8 sm:mt-10">
-                <div className="relative overflow-hidden rounded-2xl">
-                  <div
-                    className="flex transition-transform duration-500 ease-in-out"
-                    style={{
-                      transform: `translateX(-${
-                        sliderIndices[sectionIndex] * 100
-                      }%)`,
-                    }}
-                  >
-                    {section.sliderImages.map((image, index) => (
-                      <div
-                        key={index}
-                        className="w-full flex-shrink-0 flex justify-center min-w-full"
-                      >
-                        {image.isMobile ? (
-                          <div className="flex justify-center bg-gray-50 p-8">
-                            <IPhoneFrame>
-                              <Image
-                                src={image.src}
-                                alt={image.alt}
-                                width={300}
-                                height={600}
-                                className="w-full h-full object-cover"
-                              />
-                            </IPhoneFrame>
-                          </div>
-                        ) : (
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            width={1200}
-                            height={600}
-                            className="w-full h-auto object-cover"
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+  return (
+    <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
+      <div className={cn("lg:col-span-5", flip && "lg:order-2")}>{text}</div>
+      <div className={cn("lg:col-span-7", flip && "lg:order-1")}>
+        {images.length > 0 && <Media images={images} url={url} />}
+        {section.video && (
+          <Reveal y={40} className={images.length ? "mt-6" : ""}>
+            <div className="overflow-hidden rounded-2xl border border-zinc-200 shadow-[0_24px_60px_-20px_rgba(16,16,20,0.25)]">
+              <video className="h-auto w-full" autoPlay loop muted playsInline>
+                <source src={section.video.src} type="video/mp4" />
+              </video>
+            </div>
+          </Reveal>
+        )}
+      </div>
+    </div>
+  );
+}
 
-                <div className="flex justify-center gap-2 mt-6">
-                  {section.sliderImages.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        sliderIndices[sectionIndex] === index
-                          ? "bg-secondary w-8"
-                          : "bg-gray-300 w-2 hover:bg-gray-400"
-                      }`}
-                      onClick={() => {
-                        setSliderIndices((prev) => {
-                          const newIndices = [...prev];
-                          newIndices[sectionIndex] = index;
-                          return newIndices;
-                        });
-                      }}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
+/** Key features of the project, alternating text / screenshots. */
+export default function Data({ data, url }: { data: CaseStudy["data"]; url?: string }) {
+  const sections = data?.sections ?? [];
+  if (!sections.length) return null;
+
+  return (
+    <section className="section bg-white">
+      <div className="container">
+        <Reveal>
+          <p className="eyebrow mb-4">Inside the product</p>
+          <h2 className="max-w-2xl font-heading text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-[2.75rem]">
+            Key features we built
+          </h2>
+        </Reveal>
+        <div className="mt-16 space-y-24 md:space-y-32">
+          {sections.map((section, i) => (
+            <Feature key={i} section={section} index={i} url={url} />
+          ))}
+        </div>
       </div>
     </section>
   );

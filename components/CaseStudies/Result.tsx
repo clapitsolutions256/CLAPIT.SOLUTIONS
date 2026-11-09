@@ -1,52 +1,38 @@
 import React from "react";
-import { TrendingUp } from "lucide-react";
+import SectionHeading from "../ui/SectionHeading";
+import { RevealGroup, RevealItem } from "../ui/Reveal";
 
-interface Result {
+interface ResultItem {
   label: string;
   value: string;
 }
 
-export default function Result({ results }: { results: Result[] }) {
+export default function Result({ results }: { results: ResultItem[] }) {
   if (!results || results.length === 0) return null;
 
   return (
-    <section className="pb-14 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-5xl mx-auto">
-
-        {/* Heading */}
-        <div className="text-center mb-10">
-          <h2 className="text-xl sm:text-2xl font-semibold text-dark tracking-tight flex items-center justify-center gap-2">
-            <TrendingUp className="w-5 h-5 text-secondary" />
-            Results
-          </h2>
+    <section className="px-3 sm:px-4">
+      <div className="relative mx-auto max-w-[1440px] overflow-hidden rounded-3xl bg-ink py-20 md:py-24">
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/60 to-transparent"
+          aria-hidden="true"
+        />
+        <div className="container">
+          <SectionHeading tone="dark" align="center" eyebrow="Outcome" title="Results at a glance" />
+          <RevealGroup
+            className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4"
+            stagger={0.08}
+          >
+            {results.map((result, index) => (
+              <RevealItem key={index} className="bg-ink p-6 text-center sm:p-8">
+                <p className="font-heading text-2xl font-semibold text-white sm:text-3xl">{result.value}</p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                  {result.label}
+                </p>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </div>
-
-        {/* Result Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          {results.map((result, index) => (
-            <div
-              key={index}
-              className="
-                border border-lightMedium/40 rounded-xl
-                px-5 py-6 
-                bg-gradient-to-br from-white to-lightMedium/10
-                hover:bg-secondary/5
-                transition-all duration-300
-                hover:border-secondary/40
-                text-center
-              "
-            >
-              <div className="text-[22px] sm:text-[26px] font-semibold text-dark tracking-tight">
-                {result.value}
-              </div>
-
-              <p className="text-[11px] sm:text-[12px] text-darkMedium uppercase tracking-wide mt-1">
-                {result.label}
-              </p>
-            </div>
-          ))}
-        </div>
-
       </div>
     </section>
   );

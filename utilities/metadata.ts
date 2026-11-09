@@ -203,7 +203,7 @@ export function generateCaseStudyMetadata(
 ): Metadata {
   const studyTitle = study.title || "Case Study";
   const studyId = study.id || "";
-  const title = `${studyTitle} - Case Study | ${siteName}`;
+  const title = `${studyTitle} – Case Study`; // layout template appends " | CLAPIT SOLUTIONS"
   const description =
     study.description ||
     study.details ||

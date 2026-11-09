@@ -1,87 +1,86 @@
 import React from "react";
 import { CaseStudy } from "../types";
-import AnimatedSection1 from "../AnimatedSection1";
-import Image from "next/image";
+import { Reveal } from "../ui/Reveal";
 
-const IPhoneFrame = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative w-[300px] h-[600px] rounded-[45px] bg-black p-3 shadow-xl">
-    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-[25px] bg-black rounded-b-2xl z-20">
-      <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gray-800 rounded-full"></div>
-    </div>
-    <div className="w-full h-full bg-white rounded-[35px] overflow-hidden">
-      {children}
-    </div>
-  </div>
-);
-
+/** Overview copy + a sticky "project facts" card (industries, services, stack). */
 export default function DescriptionSection({ study }: { study: CaseStudy }) {
-  if (!study || !study.title || !study.subtitle || !study.image) {
-    console.error("Missing required study data", study);
-    return <div>Invalid data provided. Please check the props.</div>;
-  }
+  if (!study?.title) return null;
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12 sm:mb-16 text-center">
-          <AnimatedSection1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-6">
-              Overview
+    <section className="section bg-white">
+      <div className="container grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-7">
+          <Reveal>
+            <p className="eyebrow mb-4">Overview</p>
+            <h2 className="font-heading text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
+              About the project
             </h2>
-          </AnimatedSection1>
-          <AnimatedSection1>
-            <p className="text-lg sm:text-xl md:text-2xl text-medium leading-relaxed max-w-4xl mx-auto">
-              {study.description}
-            </p>
-          </AnimatedSection1>
-        </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 text-lg leading-relaxed text-zinc-600">{study.description}</p>
+          </Reveal>
 
-        <div className="rounded-2xl overflow-hidden shadow-2xl">
-          {study.video ? (
-            <div className="relative w-full">
-              {study.video?.isMobile ? (
-                <div className="flex justify-center py-8 bg-gray-50">
-                  <IPhoneFrame>
-                    <video
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    >
-                      <source src={study.video.src} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </IPhoneFrame>
-                </div>
-              ) : (
+          {study.video && (
+            <Reveal delay={0.15} className="mt-10">
+              <div
+                className={
+                  study.video.isMobile
+                    ? "mx-auto w-full max-w-[280px] overflow-hidden rounded-[2.4rem] bg-ink p-2.5 shadow-2xl"
+                    : "overflow-hidden rounded-2xl border border-zinc-200 shadow-[0_24px_60px_-20px_rgba(16,16,20,0.25)]"
+                }
+              >
                 <video
-                  className="w-full h-auto"
+                  className={study.video.isMobile ? "w-full rounded-[1.9rem]" : "h-auto w-full"}
                   autoPlay
                   loop
                   muted
                   playsInline
                 >
-                  <source src={study.video?.src} type="video/mp4" />
-                  Your browser does not support the video tag.
+                  <source src={study.video.src} type="video/mp4" />
                 </video>
-              )}
-            </div>
-          ) : (
-            <div className="relative w-full">
-              {study.image && (
-                <Image
-                  src={study.image}
-                  alt={study.title}
-                  width={1200}
-                  height={675}
-                  className="w-full h-auto object-cover"
-                  priority
-                />
-              )}
-            </div>
+              </div>
+            </Reveal>
           )}
         </div>
+
+        <aside className="lg:col-span-5">
+          <Reveal delay={0.15} className="lg:sticky lg:top-28">
+            <div className="rounded-3xl border border-zinc-200 bg-background p-7 sm:p-8">
+              <h3 className="font-sans text-sm font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                Project facts
+              </h3>
+              <dl className="mt-6 space-y-6">
+                {study.industries && study.industries.length > 0 && (
+                  <div>
+                    <dt className="text-sm font-semibold text-ink">Industry</dt>
+                    <dd className="mt-1 text-[15px] text-zinc-600">{study.industries.join(" · ")}</dd>
+                  </div>
+                )}
+                {study.services && study.services.length > 0 && (
+                  <div>
+                    <dt className="text-sm font-semibold text-ink">What we did</dt>
+                    <dd className="mt-1 text-[15px] text-zinc-600">{study.services.join(" · ")}</dd>
+                  </div>
+                )}
+                {study.technologies && study.technologies.length > 0 && (
+                  <div>
+                    <dt className="text-sm font-semibold text-ink">Tech stack</dt>
+                    <dd className="mt-3 flex flex-wrap gap-2">
+                      {study.technologies.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </Reveal>
+        </aside>
       </div>
     </section>
   );

@@ -1,42 +1,49 @@
 import React from "react";
+import { Lightbulb } from "lucide-react";
 import { CaseStudy } from "../types";
-import { Target, Lightbulb } from "lucide-react";
+import SectionHeading from "../ui/SectionHeading";
+import { Reveal, RevealGroup, RevealItem } from "../ui/Reveal";
 
 export default function Objectives({ data }: { data: CaseStudy }) {
+  const objectives = data.objectives ?? [];
+  if (!objectives.length && !data.approachDescription) return null;
+
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-8 flex items-center gap-3">
-            <Target className="w-8 h-8 sm:w-10 sm:h-10 text-secondary" />
-            Objectives
-          </h2>
-          <ul className="space-y-4">
-            {data.objectives?.map((objective, index) => (
-              <li key={index} className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center mt-1">
-                  <div className="w-2 h-2 rounded-full bg-secondary"></div>
+    <section className="section bg-white">
+      <div className="container grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <SectionHeading eyebrow="The challenge" title="Objectives" />
+          <RevealGroup as="ol" className="mt-10 space-y-4" stagger={0.08}>
+            {objectives.map((objective, index) => (
+              <RevealItem as="li" key={index}>
+                <div className="flex gap-5 rounded-2xl border border-zinc-200 p-5">
+                  <span className="font-heading text-2xl font-semibold text-secondary">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-[15px] leading-relaxed text-zinc-700 sm:text-base">{objective}</p>
                 </div>
-                <p className="text-base sm:text-lg text-medium leading-relaxed flex-1">
-                  {objective}
-                </p>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealGroup>
         </div>
 
-        {data.approachTitle && data.approachDescription && (
-          <div className="mt-12 p-8 sm:p-10 bg-gradient-to-br from-secondary/5 to-secondary/10 rounded-2xl border border-secondary/20">
-            <div className="flex items-start gap-4 mb-4">
-              <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 text-secondary flex-shrink-0 mt-1" />
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary">
-                {data.approachTitle}
-              </h3>
+        {data.approachDescription && (
+          <Reveal delay={0.1} className="lg:pt-24">
+            <div className="relative h-full overflow-hidden rounded-3xl bg-ink p-8 sm:p-10">
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-secondary/25 blur-3xl" aria-hidden="true" />
+              <div className="relative">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-white">
+                  <Lightbulb className="h-6 w-6" aria-hidden="true" />
+                </div>
+                <h3 className="mt-6 font-heading text-2xl font-semibold text-white sm:text-3xl">
+                  {data.approachTitle || "Our approach"}
+                </h3>
+                <p className="mt-4 text-base leading-relaxed text-zinc-300 sm:text-lg">
+                  {data.approachDescription}
+                </p>
+              </div>
             </div>
-            <p className="text-base sm:text-lg md:text-xl text-dark leading-relaxed ml-0 sm:ml-12">
-              {data.approachDescription}
-            </p>
-          </div>
+          </Reveal>
         )}
       </div>
     </section>

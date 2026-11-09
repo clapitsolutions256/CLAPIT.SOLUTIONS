@@ -8,12 +8,11 @@ import ServicesProvided from "@/components/CaseStudies/ServicesProvided";
 import Objectives from "@/components/CaseStudies/Objectives";
 import Result from "@/components/CaseStudies/Result";
 import Conclusion from "@/components/CaseStudies/Conclusion";
-import CaseStudiesStarted from "@/components/CaseStudies/CaseStudiesStarted";
 import Data from "@/components/CaseStudies/Data";
 import ArticleSchema from "@/components/StructuredData/ArticleSchema";
 import BreadcrumbSchema from "@/components/StructuredData/BreadcrumbSchema";
-import GetStarted from "@/components/GetStarted";
 import ContactUs from "@/components/ContactUs";
+import MoreProjects from "@/components/CaseStudies/MoreProjects";
 
 interface Params {
   slug: string;
@@ -59,6 +58,10 @@ export default async function CaseStudyPage({
     }
   }
 
+  const index = caseStudies.findIndex((s) => s.id === slug);
+  const prev = index > 0 ? caseStudies[index - 1] : undefined;
+  const next = index < caseStudies.length - 1 ? caseStudies[index + 1] : undefined;
+
   const breadcrumbs = [
     { name: "Home", url: "/" },
     { name: "Case Studies", url: "/case-studies" },
@@ -78,23 +81,15 @@ export default async function CaseStudyPage({
         }}
       />
       <BreadcrumbSchema items={breadcrumbs} />
-      <CaseStudiesDetailHeader
-        bgImage={study.image || ""}
-        title={study.title || "Case Study"}
-        subtitle={study.details}
-        category={study.subtitle}
-        logoText={study.title || "Case Study"}
-        link={study.link}
-      />
+      <CaseStudiesDetailHeader study={study} />
       <DescriptionSection study={study} />
       <ServicesProvided services={study.servicesProvided || []} />
       <Objectives data={study} />
-      <Data data={study.data} />
+      <Data data={study.data} url={study.link} />
       <Result results={study.results || []} />
       <Conclusion study={study} />
-      <div className="px-4 md:px-8">
-        <ContactUs />
-      </div>
+      <MoreProjects prev={prev} next={next} />
+      <ContactUs />
     </div>
   );
 }

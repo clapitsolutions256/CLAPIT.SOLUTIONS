@@ -242,7 +242,11 @@ export const allCaseStudies: (CaseStudy & {
             "Men's and women's collections with category and style navigation.",
             "Nationwide delivery, '100% original' and 'first check, then pay' messages shown site-wide."
           ],
-          images: [{ src: IMAGES.Empulse1, alt: "Empulse home page", isMobile: false }]
+          images: [
+            { src: IMAGES.Empulse1, alt: "Empulse home page", isMobile: false },
+            { src: IMAGES.Empulse3, alt: "Shop by style and new arrivals", isMobile: false },
+            { src: IMAGES.EmpulseMobile, alt: "Empulse on mobile", isMobile: true }
+          ]
         },
         {
           title: "Product Pages & Checkout",
@@ -254,7 +258,10 @@ export const allCaseStudies: (CaseStudy & {
             "Cash on delivery and online bank transfer, with a one-tap copy of the account number.",
             "Free shipping above Rs. 5,000 and an easy returns policy."
           ],
-          images: [{ src: IMAGES.Empulse2, alt: "Empulse product page", isMobile: false }]
+          images: [
+            { src: IMAGES.Empulse2, alt: "Empulse product page", isMobile: false },
+            { src: IMAGES.Empulse4, alt: "Empulse category listing", isMobile: false }
+          ]
         },
         {
           title: "Admin Panel",
@@ -347,7 +354,10 @@ export const allCaseStudies: (CaseStudy & {
             "Free shipping over Rs. 5,000 and easy returns.",
             "Cash on delivery or online bank transfer at checkout."
           ],
-          images: [{ src: IMAGES.Levish2, alt: "Levish product page", isMobile: false }]
+          images: [
+            { src: IMAGES.Levish2, alt: "Levish product page", isMobile: false },
+            { src: IMAGES.Levish3, alt: "Levish hoodies collection", isMobile: false }
+          ]
         },
         {
           title: "Shared Commerce Platform",
@@ -428,7 +438,11 @@ export const allCaseStudies: (CaseStudy & {
             "Post an ad with photos, price and contact details.",
             "Favourites, buyer requests and a personal listings dashboard."
           ],
-          images: [{ src: IMAGES.XMarketplace1, alt: "X Marketplace home page", isMobile: false }]
+          images: [
+            { src: IMAGES.XMarketplace1, alt: "X Marketplace home page", isMobile: false },
+            { src: IMAGES.XMarketplace3, alt: "Popular cities and vehicle listings", isMobile: false },
+            { src: IMAGES.XMarketplace4, alt: "Listings filtered by city", isMobile: false }
+          ]
         },
         {
           title: "Official Store",
@@ -439,7 +453,10 @@ export const allCaseStudies: (CaseStudy & {
             "Product catalogue, cart and checkout for official products.",
             "Products and orders managed from the admin console."
           ],
-          images: [{ src: IMAGES.XMarketplace2, alt: "X Marketplace official store", isMobile: false }]
+          images: [
+            { src: IMAGES.XMarketplace2, alt: "X Marketplace official store", isMobile: false },
+            { src: IMAGES.XMarketplace5, alt: "Official store product page", isMobile: false }
+          ]
         },
         {
           title: "Realtime Chat & Notifications",
@@ -470,6 +487,119 @@ export const allCaseStudies: (CaseStudy & {
     ],
     Conclusion:
       "X Marketplace brings classifieds and an official store together on one modern platform. Realtime chat, location-aware discovery and a dedicated admin console make it safe for users and easy for the team to run.",
+    featured: true
+  },
+  {
+    id: "helpline-staff",
+    industries: ["Nonprofit", "HR & Attendance", "Mobile App"],
+    services: [
+      "Mobile App Development",
+      "Admin Dashboard",
+      "API Development",
+      "App Store & Play Store Release"
+    ],
+    title: "Helpline Staff",
+    subtitle: "Attendance & Daily Reporting App for Helpline Welfare Trust",
+    details:
+      "Helpline Staff is the official attendance and daily-reporting app for Helpline Welfare Trust employees. Staff check in, write their daily project report and check out, and supervisors see who is on duty. It is live on the App Store and Google Play.",
+    description:
+      "We built an iOS and Android app with Expo and React Native, plus a Next.js admin dashboard that serves as its backend. Employees sign in with accounts created by the admin, check in and out on a duty clock, and send a daily report for each assigned project: schools, vocational centres, orphan care and welfare programmes. Duty closes automatically at 8 PM, and a 7:30 PM local reminder makes sure no report is missed.",
+    image: IMAGES.Staff0.src,
+    alt: "Helpline Staff – attendance and daily reports app",
+    appStoreLink: "https://apps.apple.com/pk/app/helpline-staff/id6822322625",
+    playStoreLink: "https://play.google.com/store/apps/details?id=com.helpline.staff",
+    technologies: [
+      "React Native",
+      "Expo",
+      "TypeScript",
+      "Expo Notifications",
+      "Secure Store",
+      "Next.js",
+      "Prisma",
+      "MongoDB",
+      "JWT Auth",
+      "EAS Build"
+    ],
+    servicesProvided: [
+      { id: 1, name: "iOS & Android App", icon: Smartphone },
+      { id: 2, name: "Attendance & Duty Clock", icon: Calendar },
+      { id: 3, name: "Daily Project Reports", icon: Layout },
+      { id: 4, name: "Admin Dashboard & API", icon: Monitor },
+      { id: 5, name: "Secure Employee Auth", icon: LockIcon },
+      { id: 6, name: "Store Release (App Store & Play)", icon: ShieldCheck }
+    ],
+    objectives: [
+      "Replace paper registers with a simple check-in and check-out app.",
+      "Collect a daily progress report for every assigned project.",
+      "Give supervisors a live view of who is on duty and what was reported.",
+      "Let admins manage employees, projects, attendance and reports in one dashboard."
+    ],
+    approachTitle: "Approach",
+    approachDescription:
+      "The staff app uses Expo and React Native for one codebase on iOS and Android, with secure token storage and local notifications for reminders. A Next.js admin dashboard with Prisma and MongoDB provides the API and lets administrators create accounts, assign projects and review attendance and reports. Business rules such as auto check-out at 8 PM Pakistan time and limited late reports run on the server. We prepared the store listings, screenshots and privacy policy, and shipped the app to both stores through EAS Build.",
+    data: {
+      sections: [
+        {
+          title: "Duty Clock & Attendance",
+          description:
+            "A greeting, role badge and one clear duty clock: check in on arrival and check out when the day is done.",
+          subDescriptions: [
+            "Today's check-in and check-out times at a glance.",
+            "Automatic check-out at 8:00 PM Pakistan time.",
+            "7:30 PM local reminder to send the report while on duty."
+          ],
+          images: [
+            { src: IMAGES.Staff1, alt: "Today screen with duty clock", isMobile: true },
+            { src: IMAGES.Staff7, alt: "Sign in screen", isMobile: true }
+          ]
+        },
+        {
+          title: "Daily Reports",
+          description:
+            "Checking out asks for today's report, so nothing is missed.",
+          subDescriptions: [
+            "Report per assigned project: schools, training centres, orphan care and welfare programmes.",
+            "A missed report can be added later (up to 3 days back, twice a month)."
+          ],
+          images: [
+            { src: IMAGES.Staff2, alt: "Daily report screen", isMobile: true },
+            { src: IMAGES.Staff3, alt: "Check-out report screen", isMobile: true }
+          ]
+        },
+        {
+          title: "History, Team & Profile",
+          description:
+            "Employees review their record, and supervisors get a live team view.",
+          subDescriptions: [
+            "History of check-in and check-out times, hours on duty and every report sent.",
+            "Team view: who is on duty today and what each person reported.",
+            "Profile with role, employee ID and assigned projects."
+          ],
+          images: [
+            { src: IMAGES.Staff4, alt: "Attendance history", isMobile: true },
+            { src: IMAGES.Staff5, alt: "Team view for supervisors", isMobile: true },
+            { src: IMAGES.Staff6, alt: "Profile screen", isMobile: true }
+          ]
+        },
+        {
+          title: "Admin Dashboard",
+          description:
+            "A web dashboard for the Trust's administrators, which also serves as the app's API.",
+          subDescriptions: [
+            "Manage employees, projects and assignments.",
+            "Attendance records and daily reports, with account deletion requests handled in-app."
+          ]
+        }
+      ]
+    },
+    results: [
+      { label: "Platforms", value: "iOS & Android" },
+      { label: "App Store", value: "Live" },
+      { label: "Google Play", value: "Live" },
+      { label: "Released", value: "Nov 2026" }
+    ],
+    Conclusion:
+      "Helpline Staff turns daily attendance and reporting into a thirty-second routine for the Trust's field teams, and gives management reliable, real-time visibility across every project.",
     featured: true
   },
   {
@@ -558,7 +688,7 @@ export const allCaseStudies: (CaseStudy & {
     ],
     Conclusion:
       "PepTalk offers an emotionally intelligent approach to parenting through technology. By combining AI-driven design thinking with React Native engineering, it empowers moms to create positive memory loops that comfort and motivate their children before challenging experiences.",
-    featured: true
+    featured: false
   },
   {
     id: "sportsball",

@@ -1,38 +1,35 @@
 import React from "react";
+import SectionHeading from "../ui/SectionHeading";
+import { RevealGroup, RevealItem } from "../ui/Reveal";
 
 interface Service {
   name: string;
   icon: React.ElementType;
 }
 
-export default function ServicesProvided({
-  services,
-}: {
-  services: Service[];
-}) {
+export default function ServicesProvided({ services }: { services: Service[] }) {
+  if (!services?.length) return null;
+
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-12 text-center">
-          Services Provided
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <section className="section bg-background">
+      <div className="container">
+        <SectionHeading eyebrow="Services" title="What we delivered" />
+        <RevealGroup
+          as="ul"
+          className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          stagger={0.06}
+        >
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="bg-white p-6 rounded-xl border border-gray-100 hover:border-secondary/30 hover:shadow-lg transition-all duration-300 group"
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-secondary/10 group-hover:bg-secondary rounded-lg flex items-center justify-center transition-colors">
-                  <service.icon className="w-6 h-6 text-dark" />
+            <RevealItem as="li" key={index}>
+              <div className="group flex h-full items-center gap-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-secondary/30 hover:shadow-card-hover">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-brand-50 text-secondary transition-colors duration-300 group-hover:bg-secondary group-hover:text-white">
+                  <service.icon className="h-5 w-5" aria-hidden="true" />
                 </div>
-                <span className="text-dark font-semibold text-lg">
-                  {service.name}
-                </span>
+                <span className="text-[15px] font-semibold text-ink">{service.name}</span>
               </div>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

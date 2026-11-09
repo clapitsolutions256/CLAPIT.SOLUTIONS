@@ -16,7 +16,7 @@ import SectionHeading from "../ui/SectionHeading";
 import { Button } from "../ui/button";
 import { CaseStudy } from "../types";
 
-const HOME_LIMIT = 4;
+const HOME_LIMIT = 5;
 
 /**
  * Stacked case-study cards: each card sticks below the header and, as the

@@ -132,6 +132,8 @@ export interface CaseStudy {
   image?: string;
   video?: { src: string; isMobile?: boolean };
   link?: string;
+  appStoreLink?: string;
+  playStoreLink?: string;
   alt?: string;
   technologies?: string[];
   servicesProvided?: ServiceProvided[];

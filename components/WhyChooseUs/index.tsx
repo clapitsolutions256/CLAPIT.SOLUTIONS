@@ -78,19 +78,53 @@ function IntroPanel() {
         <Reveal>
           <p className="eyebrow justify-center">Why CLAPIT</p>
         </Reveal>
-        <div className="mt-6 overflow-hidden">
-          <motion.h2
-            initial={reduce ? { opacity: 0 } : { y: "110%" }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading text-5xl font-semibold leading-[0.95] tracking-tight text-ink sm:text-7xl lg:text-8xl"
+
+        {/* Trigger lives on the (unclipped) wrapper so the masked title always animates */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }}
+          className="mt-8"
+        >
+          <motion.div
+            variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.6 } } }}
+            className="mb-6 flex items-center justify-center gap-3"
+            aria-hidden="true"
           >
-            Why believe <span className="text-secondary">in us</span>
-          </motion.h2>
-        </div>
+            <span className="h-px w-16 bg-gradient-to-r from-transparent to-secondary sm:w-24" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-secondary motion-reduce:animate-none" />
+            <span className="h-px w-16 bg-gradient-to-l from-transparent to-secondary sm:w-24" />
+          </motion.div>
+
+          <div className="overflow-hidden py-2">
+            <motion.h2
+              variants={{
+                hidden: reduce ? { opacity: 0 } : { y: "110%" },
+                visible: { y: 0, opacity: 1, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
+              }}
+              className="font-heading text-5xl font-bold leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl xl:text-9xl"
+            >
+              Why Believe{" "}
+              <span className="bg-gradient-to-br from-secondary to-lightMedium bg-clip-text text-transparent">
+                in Us
+              </span>
+            </motion.h2>
+          </div>
+
+          <motion.div
+            variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.6 } } }}
+            className="mt-6 flex items-center justify-center gap-3"
+            aria-hidden="true"
+          >
+            <span className="h-px w-24 bg-gradient-to-r from-transparent to-lightMedium sm:w-40" />
+            <span className="h-3 w-3 rotate-45 border-2 border-secondary" />
+            <span className="h-px w-24 bg-gradient-to-l from-transparent to-lightMedium sm:w-40" />
+          </motion.div>
+        </motion.div>
+
         <Reveal delay={0.25}>
-          <p className="mx-auto mt-8 max-w-xl text-lg text-zinc-600">
+          <p className="mx-auto mt-8 max-w-2xl text-lg text-zinc-600 sm:text-xl">
             A decade of shipping products for startups and enterprises — here&apos;s
             what sets our team apart.
           </p>

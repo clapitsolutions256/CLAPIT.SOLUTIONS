@@ -97,7 +97,7 @@ const LoopVideo: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-transparent to-transparent" />
         </div>
 
-        <div className="relative z-10 flex min-h-[calc(100svh-108px)] flex-col justify-between gap-6 px-5 pb-5 pt-8 sm:min-h-[calc(100svh-96px)] sm:px-10 sm:pb-8 sm:pt-16 md:px-14 lg:px-20 lg:pt-24">
+        <div className="relative z-10 flex min-h-[calc(100svh-108px)] flex-col justify-center gap-8 px-5 py-8 sm:min-h-[calc(100svh-96px)] sm:justify-between sm:gap-6 sm:px-10 sm:pb-8 sm:pt-16 md:px-14 lg:px-20 lg:pt-24">
           <motion.div className="max-w-3xl" variants={container} initial="hidden" animate="visible">
             <motion.p variants={item} className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-medium text-zinc-200 backdrop-blur sm:mb-6 sm:px-3.5 sm:py-1.5 sm:text-xs [@media(max-height:700px)]:hidden">
               <span className="h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true" />
@@ -139,7 +139,7 @@ const LoopVideo: React.FC = () => {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:mt-10 lg:grid-cols-4 [@media(max-height:640px)]:hidden"
+            className="isolate grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 [clip-path:inset(0_round_1rem)] sm:mt-10 lg:grid-cols-4 [@media(max-height:640px)]:hidden"
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.7 } } }}
             initial="hidden"
             animate="visible"

@@ -7,7 +7,7 @@ import FloatingContactButton from "@/components/FloatingContactButton";
 import CustomCursor from "@/components/CustomCursor";
 import Loader from "@/components/Loading";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { heading, body } from "./font";
+import { heading, body, futura } from "./font";
 import { Analytics } from "@vercel/analytics/next"
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -161,7 +161,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${heading.variable} ${body.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${heading.variable} ${body.variable} ${futura.variable} font-sans antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
         <script

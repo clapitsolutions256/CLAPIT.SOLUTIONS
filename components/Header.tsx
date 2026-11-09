@@ -1,245 +1,361 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import DropdownMenu from "./DropdownMenu";
-import { Button } from "./ui/button";
+import { Button } from "./ui/legacy-button";
 import { services } from "@/data/services";
+import { industriesData, } from "@/data/industries";
 import { IMAGES } from "@/public/images";
-import { cn } from "@/utilities/ui";
-
-const NAV_LINKS = [
-  { href: "/case-studies", label: "Projects" },
-  { href: "/about", label: "About" },
-  { href: "/people", label: "People" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blogs", label: "Blogs" },
-];
-
-const toMenuItems = (category: string) =>
-  services
-    .filter((s) => s.category === category)
-    .map((s) => ({
-      title: s.title,
-      href: s.href || `/services/${s.id}`,
-      description: s.description,
-      category: s.category,
-    }));
 
 export const Header = () => {
-  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("development");
+  const [activeMenu, setActiveMenu] = useState<
+    "services" | null
+  >(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const isDropdownOpen = activeMenu !== null;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
       const dropdownMenu = document.querySelector(".dropdown-menu");
       const menuButtons = document.querySelectorAll(".menu-button");
+
       if (
-        dropdownMenu?.contains(target) ||
-        Array.from(menuButtons).some((button) => button.contains(target))
+        (dropdownMenu && dropdownMenu.contains(event.target as Node)) ||
+        Array.from(menuButtons).some((button) =>
+          button.contains(event.target as Node)
+        )
       ) {
         return;
       }
-      setServicesOpen(false);
+
+      setActiveMenu(null);
     };
 
     const handleResize = () => {
-      if (window.innerWidth >= 1024) setIsMobileMenuOpen(false);
-    };
-
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setServicesOpen(false);
+      if (window.innerWidth >= 768) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    handleScroll();
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
-    window.addEventListener("keydown", handleKey);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("keydown", handleKey);
     };
   }, []);
 
-  // Close menus on navigation
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setServicesOpen(false);
-  }, [pathname]);
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+  };
 
-  const isActive = (href: string) =>
-    pathname === href || pathname?.startsWith(`${href}/`);
-
-  const closeAll = () => {
+  const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
-    setServicesOpen(false);
+    setActiveMenu(null);
+  };
+
+  const handleMenuClick = (menu: "services") => {
+    setIsMobileMenuOpen(false);
+    setActiveMenu((prevMenu) => (prevMenu === menu ? null : menu));
+  };
+
+  const getDropdownProps = () => {
+    if (activeMenu === "services") {
+      // Show both Development and Marketing services
+      const developmentServices = services
+        .filter((s) => s.category === "development")
+        .map((s) => ({
+          title: s.title,
+          href: s.href || `/services/${s.id}`,
+          description: s.description,
+          category: s.category,
+        }));
+
+      const marketingServices = services
+        .filter((s) => s.category === "marketing")
+        .map((s) => ({
+          title: s.title,
+          href: s.href || `/services/${s.id}`,
+          description: s.description,
+          category: s.category,
+        }));
+
+      return {
+        developmentServices,
+        marketingServices,
+        seeAll: "/services",
+        title: "services",
+      };
+    }
+    return {
+      developmentServices: [],
+      marketingServices: [],
+      seeAll: "/services",
+      title: "services",
+    };
+  };
+
+  const mobileMenuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut" as const,
+      },
+    },
+    open: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut" as const,
+      },
+    },
   };
 
   return (
-    <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-[1000] bg-white transition-[box-shadow,border-color] duration-300",
+    <div className="[font-family:var(--font-futura)] [letter-spacing:0.01em]">
+      <nav
+        className={`fixed top-0 left-0 right-0 px-4   m-4 rounded-2xl z-[1000] transition-all duration-300 w-full sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px] mx-auto ${
           scrolled || isMobileMenuOpen
-            ? "border-b border-zinc-200 shadow-[0_1px_12px_rgba(16,16,20,0.06)]"
-            : "border-b border-transparent"
-        )}
+            ? "bg-white shadow-lg dark:bg-dark"
+            : "bg-transparent"
+        }`}
       >
-        <nav
-          aria-label="Main"
-          className="container flex h-[72px] items-center justify-between gap-6"
-        >
-          <Link href="/" className="shrink-0" aria-label="CLAPIT SOLUTIONS home">
-            <Image
-              src={IMAGES.CLAPIT}
-              alt="CLAPIT SOLUTIONS"
-              width={168}
-              height={40}
-              priority
-              className="h-9 w-auto sm:h-10"
-            />
-          </Link>
-
-          <div className="hidden items-center gap-1 lg:flex">
-            <button
-              type="button"
-              onClick={() => setServicesOpen((o) => !o)}
-              aria-expanded={servicesOpen}
-              aria-haspopup="true"
-              className={cn(
-                "menu-button inline-flex h-10 items-center gap-1 rounded-lg px-3.5 text-[15px] font-medium transition-colors",
-                servicesOpen || isActive("/services")
-                  ? "text-secondary"
-                  : "text-zinc-700 hover:bg-zinc-100 hover:text-ink"
-              )}
+        <div className="mx-auto ">
+          <div className="flex items-center justify-between h-16 ">
+            <Link
+              href="/"
+              className={`text-2xl font-bold text-dark ${
+                scrolled || isMobileMenuOpen
+                  ? "text-gray-900 dark:text-white"
+                  : "text-dark"
+              }`}
             >
-              Services
-              <ChevronDown
-                className={cn(
-                  "h-4 w-4 transition-transform duration-200",
-                  servicesOpen && "rotate-180"
-                )}
-                aria-hidden="true"
+              <Image
+                src={IMAGES.CLAPIT}
+                alt="CLAPIT SOLUTIONS"
+                width={150}
+                height={150}
+                className="w-full h-full object-cover rounded-lg"
               />
-            </button>
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "inline-flex h-10 items-center rounded-lg px-3.5 text-[15px] font-medium transition-colors",
-                  isActive(link.href)
-                    ? "text-secondary"
-                    : "text-zinc-700 hover:bg-zinc-100 hover:text-ink"
-                )}
+            </Link>
+
+            <div className="flex items-center space-x-8">
+              <div
+                className="hidden lg:flex flex-1 justify-center"
+                ref={menuRef}
               >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+                <div className="flex items-center space-x-10">
+                  <div className="relative">
+                    <button
+                      onClick={() => handleMenuClick("services")}
+                      className={`menu-button relative group light:text-gray-600 hover:text-secondary font-medium ${
+                        scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                      } ${activeMenu === "services" ? "text-secondary" : ""}`}
+                    >
+                      <span>Services</span>
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
+                    </button>
+                  </div>
 
-          <div className="flex items-center gap-2">
-            <Button asChild className="hidden lg:inline-flex">
-              <Link href="/contact-us">Get in touch</Link>
-            </Button>
-            <button
-              type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-ink hover:bg-zinc-100 lg:hidden"
-              onClick={() => setIsMobileMenuOpen((o) => !o)}
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMobileMenuOpen}
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </nav>
-
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              className="overflow-hidden border-t border-zinc-200 bg-white lg:hidden"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-            >
-              <div className="container space-y-1 py-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    setServicesOpen(true);
-                  }}
-                  className="menu-button flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-base font-medium text-ink hover:bg-zinc-100"
-                >
-                  Services
-                  <ChevronDown className="h-4 w-4 -rotate-90" aria-hidden="true" />
-                </button>
-                {NAV_LINKS.map((link) => (
                   <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={closeAll}
-                    className={cn(
-                      "block rounded-lg px-3 py-3 text-base font-medium hover:bg-zinc-100",
-                      isActive(link.href) ? "text-secondary" : "text-ink"
-                    )}
+                    href="/case-studies"
+                    className={`relative group light:text-gray-600 hover:text-secondary font-medium ${
+                      scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                    }`}
                   >
-                    {link.label}
+                    <span>Projects</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
                   </Link>
-                ))}
-                <div className="pt-3">
-                  <Button asChild size="lg" className="w-full">
-                    <Link href="/contact-us" onClick={closeAll}>
-                      Get in touch
-                    </Link>
-                  </Button>
+                  <Link
+                    href="/about"
+                    className={`relative group light:text-gray-600 hover:text-secondary font-medium ${
+                      scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                    }`}
+                  >
+                    <span>About</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
+                  </Link>
+                  <Link
+                    href="/people"
+                    className={`relative group light:text-gray-600 hover:text-secondary font-medium ${
+                      scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                    }`}
+                  >
+                    <span>People</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className={`relative group light:text-gray-600 hover:text-secondary font-medium ${
+                      scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                    }`}
+                  >
+                    <span>Pricing</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
+                  </Link>
+                  <Link
+                    href="/blogs"
+                    className={`relative group light:text-gray-600 hover:text-secondary font-medium ${
+                      scrolled ? "text-gray-900 dark:text-white" : "text-dark"
+                    }`}
+                  >
+                    <span>Blogs</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all group-hover:w-full" />
+                  </Link>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
-
-      <AnimatePresence>
-        {servicesOpen && (
-          <motion.div
-            className="fixed inset-0 z-[9999] bg-ink/30 backdrop-blur-[2px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="absolute left-1/2 top-20 w-full max-w-7xl -translate-x-1/2 px-4">
-              <div className="dropdown-menu">
-                <DropdownMenu
-                  onClose={() => setServicesOpen(false)}
-                  developmentServices={toMenuItems("development")}
-                  marketingServices={toMenuItems("marketing")}
-                  seeAll="/services"
-                  title="services"
-                />
+              <div className="hidden lg:block">
+                <Button
+                  asChild
+                  className={`${
+                    scrolled
+                      ? "bg-light  text-white light:bg-primary dark:bg-secondary dark:text-primary light:text-dark hover:bg-primary hover:text-secondary font-medium"
+                      : "bg-secondary text-white light:bg-gray-100 light:text-dark hover:bg-black font-medium"
+                  }`}
+                >
+                  <Link href="/contact-us" onClick={handleLinkClick}>
+                    Get in touch
+                  </Link>
+                </Button>
               </div>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <motion.div
+                  initial={false}
+                  animate={isMobileMenuOpen ? "open" : "closed"}
+                >
+                  {isMobileMenuOpen ? (
+                    <X
+                      className={`w-6 h-6 ${
+                        scrolled || isMobileMenuOpen
+                          ? "text-gray-900 dark:text-white"
+                          : "text-white"
+                      }`}
+                    />
+                  ) : (
+                    <Menu
+                      className={`w-6 h-6 ${
+                        scrolled || isMobileMenuOpen
+                          ? "text-gray-900 dark:text-white"
+                          : "text-dark"
+                      }`}
+                    />
+                  )}
+                </motion.div>
+              </Button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </div>
+
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                className="lg:hidden overflow-hidden bg-white dark:bg-dark"
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={mobileMenuVariants}
+              >
+                <div className="px-2 pt-2 pb-3 space-y-3">
+                  <button
+                    onClick={() => handleMenuClick("services")}
+                    className="w-full text-left px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                  >
+                    Services
+                  </button>
+                  <Link
+                    href="/case-studies"
+                    className="block px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                    onClick={handleLinkClick}
+                  >
+                    <span>Projects</span>
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                    onClick={handleLinkClick}
+                  >
+                    <span>About</span>
+                  </Link>
+                  <Link
+                    href="/people"
+                    className="block px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                    onClick={handleLinkClick}
+                  >
+                    <span>People</span>
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="block px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                    onClick={handleLinkClick}
+                  >
+                    <span>Pricing</span>
+                  </Link>
+                  <Link
+                    href="/blogs"
+                    className="block px-4 py-2 text-base font-medium text-gray-900 dark:text-white rounded-lg light:bg-gray-100 dark:light:bg-gray-800 transition-colors"
+                    onClick={handleLinkClick}
+                  >
+                    <span>Blogs</span>
+                  </Link>
+                  <div className="pt-2">
+                    <Button
+                      asChild
+                      className="w-full bg-dark text-white light:bg-gray-800 dark:bg-white dark:text-dark"
+                    >
+                      <Link href="/contact-us" onClick={handleLinkClick}>
+                        Get in touch
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </nav>
+
+      {isDropdownOpen && (
+        <motion.div
+          className="fixed inset-0 bg-dark/20 z-[9999]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className="absolute left-1/2 top-24 -translate-x-1/2 w-full max-w-7xl mx-auto px-4">
+            <div className="dropdown-menu">
+              <DropdownMenu
+                onClose={() => setActiveMenu(null)}
+                {...getDropdownProps()}
+              />
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </div>
   );
 };
 

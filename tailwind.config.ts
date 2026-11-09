@@ -2,9 +2,6 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  // Class-based so the site renders the same light design regardless of the
-  // visitor's OS theme (media-based dark mode was flipping the header dark).
-  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -44,12 +41,12 @@ export default {
           800: "#18181B",
           700: "#27272A",
         },
-        // Legacy tokens kept for existing pages
-        background: "#F7F7F8",
+        // Original tokens (unchanged)
+        background: "#efefef",
         dark: "#161616",
-        light: "#E4E4E7",
-        medium: "#71717A",
-        darkMedium: "#52525B",
+        light: "#E0E0E0",
+        medium: "#9B9FA6",
+        darkMedium: "#54565A",
         lightMedium: "#F85C1E",
       },
       boxShadow: {

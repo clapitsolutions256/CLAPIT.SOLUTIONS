@@ -73,7 +73,7 @@ const LoopVideo: React.FC = () => {
   }, [currentIndex]);
 
   return (
-    <section className="px-3 pb-3 pt-[84px] sm:px-4">
+    <section className="px-3 pb-3 pt-24 sm:px-4">
       <div className="relative mx-auto w-full max-w-[1440px] overflow-hidden rounded-3xl bg-ink">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           {SLIDES.map((src: string, index: number) => (

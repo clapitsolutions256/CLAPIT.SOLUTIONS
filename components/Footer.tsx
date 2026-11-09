@@ -1,143 +1,257 @@
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
-import { FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa";
-import { Mail, MapPin, Phone } from "lucide-react";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaInstagram,
+  FaYoutube,
+  FaCcVisa,
+  FaCcMastercard,
+  FaMoneyCheckAlt,
+} from "react-icons/fa";
+import { SiTrustpilot, SiFiverr, SiUpwork } from "react-icons/si";
+import { useState } from "react";
 import { services } from "@/data/services";
+import { Service } from "@/components/types";
+import Image from "next/image";
 import { IMAGES } from "@/public/images";
 
-const SOCIALS = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/105115282", icon: FaLinkedinIn },
-  { label: "Instagram", href: "https://www.instagram.com/clapit.solutions/", icon: FaInstagram },
-  { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61578368938271", icon: FaFacebookF },
-];
+type FooterLink = {
+  label: string;
+  href: string;
+};
 
-const COMPANY_LINKS = [
-  { label: "About us", href: "/about" },
-  { label: "Our people", href: "/people" },
-  { label: "Industries", href: "/industries" },
-  { label: "Case studies", href: "/case-studies" },
-  { label: "Blog", href: "/blogs" },
-  { label: "Contact", href: "/contact-us" },
-];
-
-const PRICING_LINKS = [
-  { label: "Pricing overview", href: "/pricing" },
-  { label: "Project cost calculator", href: "/pricing/calculate-outsource" },
-  { label: "Team extension cost", href: "/pricing/team-extension" },
-  { label: "Marketing cost", href: "/pricing/marketing" },
-];
-
-const LEGAL_LINKS = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms & Conditions", href: "/terms" },
-  { label: "Refund Policy", href: "/refund-policy" },
-];
-
-function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
-  return (
-    <div>
-      <h3 className="font-sans text-sm font-semibold text-white">{title}</h3>
-      <ul className="mt-4 space-y-3">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link href={link.href} className="text-sm text-zinc-400 transition-colors hover:text-white">
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+type FooterSection = {
+  id: string;
+  title: string;
+  type: "links" | "text";
+  items: FooterLink[] | Service[];
+};
 
 const Footer = () => {
-  const devServices = services.filter((s) => s.category === "development").slice(0, 6);
+  const [open, setOpen] = useState<string | null>(null);
+  const toggle = (id: string) => setOpen(open === id ? null : id);
+
+  const aboutLinks: FooterLink[] = [
+    { label: "About Us", href: "/about" },
+    { label: "Industries", href: "/industries" },
+    { label: "Our Case Studies", href: "/case-studies" },
+  ];
+
+  const serviceLinks: FooterLink[] = [
+    { label: "Calculate Project Cost", href: "/pricing/calculate-outsource" },
+    { label: "Calculate Team Cost", href: "/pricing/team-extension" },
+    { label: "Calculate Marketing Cost", href: "/pricing/marketing" },
+  ];
+
+  const sections: FooterSection[] = [
+    { id: "about", title: "About", type: "links", items: aboutLinks },
+    { id: "services", title: "Services", type: "links", items: serviceLinks },
+    {
+      id: "capabilities",
+      title: "Capabilities",
+      type: "text",
+      items: services,
+    },
+  ];
 
   return (
-    <footer className="bg-ink text-zinc-400">
-      <div className="container py-16 md:py-20">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <Link href="/" aria-label="CLAPIT SOLUTIONS home" className="inline-block rounded-xl bg-white px-4 py-3">
-              <Image src={IMAGES.CLAPIT} alt="CLAPIT SOLUTIONS" width={168} height={40} className="h-9 w-auto" />
-            </Link>
-            <p className="mt-6 max-w-sm text-sm leading-relaxed">
-              AI-powered development and branding agency helping businesses
-              design, build and grow digital products.
-            </p>
-            <ul className="mt-6 flex gap-3">
-              {SOCIALS.map(({ label, href, icon: Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`CLAPIT SOLUTIONS on ${label}`}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-secondary hover:bg-secondary hover:text-white"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
+    <footer className="[font-family:var(--font-futura)] [letter-spacing:0.01em] bg-dark text-light px-4 lg:mx-16 mx-0 lg:my-10 my-0 py-10 md:px-20 lg:rounded-[30px] rounded-t-[30px]">
+      <div className="block md:hidden ">
+        <div className="flex justify-center space-x-4 mb-6 text-xl ">
+          {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube].map(
+            (Icon, i) => (
+              <span
+                key={i}
+                className="bg-secondary hover:bg-lightMedium text-light p-2 rounded-full"
+              >
+                <Icon />
+              </span>
+            )
+          )}
+        </div>
+
+        <div className="text-center text-sm text-gray-300 mb-6">
+        <p className="text-sm text-gray-300 mb-2">
+            1440 Newport Ave, San Jose, CA 95125,
+            <br />
+            California, United States
+          </p>
+          <p className="text-sm text-gray-300 mb-6">
+            Gulberg III, Lahore, Punjab, Pakistan
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {sections.map((section) => (
+            <div key={section.id} className="border-t border-gray-700 pt-4">
+              <button
+                onClick={() => toggle(section.id)}
+                className="w-full flex justify-between items-center font-semibold text-base"
+              >
+                {section.title}
+                <span className="transform transition-transform">
+                  {open === section.id ? "▲" : "▼"}
+                </span>
+              </button>
+              {open === section.id && (
+                <ul className="mt-2 space-y-2 text-sm text-light">
+                  {section.type === "links"
+                    ? (section.items as FooterLink[]).map((link, i) => (
+                        <li key={i}>
+                          <Link href={link.href}>{link.label}</Link>
+                        </li>
+                      ))
+                    : (section.items as Service[]).map((service) => (
+                        <li
+                          key={service.id}
+                          className="cursor-pointer text-primary hover:text-secondary"
+                        >
+                          <Link href={service.href}>{service.title}</Link>
+                        </li>
+                      ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t border-gray-700 pt-6 mt-6 text-center">
+        <h4 className="text-secondary font-semibold mb-4">Contact Us</h4>
+          <p className="text-sm text-light mb-2">clapitsolutions@gmail.com</p>
+          <p className="text-sm text-light mb-2"></p>
+          <p className="text-sm text-light mb-2">mycodecircle302@gmail.com</p>
+          <p className="text-sm text-light mb-8">+92 307 3346 890</p>
+          <button className="w-full bg-secondary hover:bg-lightMedium text-dark font-semibold py-2 rounded-full">
+            Schedule a Call
+          </button>
+        </div>
+
+        <div className="flex justify-center space-x-6 text-2xl text-light my-6">
+          <FaCcVisa />
+          <FaCcMastercard />
+          <FaMoneyCheckAlt />
+        </div>
+
+        <div className="flex justify-center space-x-6 text-xl text-light mb-6">
+          <SiUpwork />
+          <SiFiverr />
+          <SiTrustpilot />
+        </div>
+      </div>
+
+      <div className="hidden md:flex  justify-between gap-12 max-w-[1400px] mx-auto">
+        <div className="max-w-xs">
+          <h3 className="text-2xl font-bold mb-4 text-light">
+            <Image src={IMAGES.CLAPIT} alt="CLAPIT SOLUTIONS" width={200} height={200} className="w-full h-full object-cover rounded-xl" />
+          </h3>
+          <p className="text-sm text-gray-300 mb-2">
+            1440 Newport Ave, San Jose, CA 95125,
+            <br />
+            California, United States
+          </p>
+          <p className="text-sm text-gray-300 mb-6">
+            Gulberg III, Lahore, Punjab, Pakistan
+          </p>
+          <div className="flex space-x-4 text-xl">
+            {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube].map(
+              (Icon, i) => (
+                <span
+                  key={i}
+                  className="bg-secondary hover:bg-lightMedium text-light p-2 rounded-full"
+                >
+                  <Icon />
+                </span>
+              )
+            )}
+          </div>
+        </div>
+        <div className="border-l border-gray-700 my-10"></div>
+
+        <div>
+          <h4 className="text-secondary font-semibold mb-4">About</h4>
+          <ul className="space-y-2 text-sm text-light">
+            {aboutLinks.map((link, i) => (
+              <li
+                key={i}
+                className="cursor-pointer text-primary hover:text-secondary"
+              >
+                <Link href={link.href}>{link.label}</Link>
+              </li>
+            ))}
+          </ul>
+          <div>
+            <h4 className="text-secondary font-semibold mb-2 mt-2">Pricing</h4>
+            <ul className="space-y-2 text-sm text-light">
+              {serviceLinks.map((link, i) => (
+                <li
+                  key={i}
+                  className="cursor-pointer text-primary hover:text-secondary"
+                >
+                  <Link href={link.href}>{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-5">
-            <LinkColumn title="Company" links={COMPANY_LINKS} />
-            <LinkColumn title="Pricing" links={PRICING_LINKS} />
-            <LinkColumn
-              title="Services"
-              links={devServices.map((s) => ({ label: s.title, href: s.href || `/services/${s.id}` }))}
-            />
-          </div>
-
-          <div className="lg:col-span-3">
-            <h3 className="font-sans text-sm font-semibold text-white">Get in touch</h3>
-            <ul className="mt-4 space-y-4 text-sm">
-              <li className="flex gap-3">
-                <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary" aria-hidden="true" />
-                <span className="space-y-1">
-                  <a href="mailto:clapitsolutions@gmail.com" className="block hover:text-white">
-                    clapitsolutions@gmail.com
-                  </a>
-                  <a href="mailto:mycodecircle302@gmail.com" className="block hover:text-white">
-                    mycodecircle302@gmail.com
-                  </a>
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <Phone className="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary" aria-hidden="true" />
-                <span className="space-y-1">
-                  <a href="tel:+16478836143" className="block hover:text-white">+1 (647) 883-6143</a>
-                  <a href="tel:+923073346890" className="block hover:text-white">+92 307 3346 890</a>
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-secondary" aria-hidden="true" />
-                <span className="leading-relaxed">
-                  1440 Newport Ave, San Jose, CA 95125, USA
-                  <br />
-                  Gulberg III, Lahore, Pakistan
-                </span>
-              </li>
-            </ul>
-          </div>
         </div>
-      </div>
 
-      <div className="border-t border-white/10">
-        <div className="container flex flex-col items-center justify-between gap-4 py-6 text-sm sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} CLAPIT SOLUTIONS Pvt Ltd. All rights reserved.</p>
-          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {LEGAL_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="transition-colors hover:text-white">
-                  {link.label}
-                </Link>
+        <div className="border-l border-gray-700 my-10"></div>
+
+        <div>
+          <h4 className="text-secondary font-semibold mb-4">Capabilities</h4>
+          <ul className="grid grid-cols-2 gap-2 text-sm text-light max-w-xs">
+            {services.map((service) => (
+              <li
+                key={service.id}
+                className="cursor-pointer text-primary hover:text-secondary"
+              >
+                <Link href={service.href}>{service.title}</Link>
               </li>
             ))}
           </ul>
         </div>
+        <div className="border-l border-gray-700 my-10"></div>
+
+        <div>
+          <h4 className="text-secondary font-semibold mb-4">Contact Us</h4>
+          <p className="text-sm text-light mb-2">clapitsolutions@gmail.com</p>
+          <p className="text-sm text-light mb-2">+1 (647) 883-6143</p>
+          <p className="text-sm text-light mb-2">mycodecircle302@gmail.com</p>
+          <p className="text-sm text-light mb-8">+92 307 3346 890</p>
+          <Link href="/contact-us" className="bg-secondary hover:bg-lightMedium px-4 py-3 rounded-full font-semibold text-light mb-4">
+            Contact Us
+          </Link>
+          <div className="flex space-x-4 text-2xl text-light mt-5 pl-3">
+            <FaCcVisa />
+            <FaCcMastercard />
+            <FaMoneyCheckAlt />
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-700 my-10"></div>
+      <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 space-y-4 sm:space-y-0">
+        <div className="flex space-x-4">
+          <Link href="/refund-policy">Refund Policy</Link>
+          <Link href="/privacy-policy">Privacy Policy</Link>
+          <Link href="/terms">Terms & Conditions</Link>
+        </div>
+        {/* <div className="flex space-x-6 text-xl">
+          <SiUpwork />
+          <SiFiverr />
+          <SiTrustpilot />
+        </div> */}
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-between text-center mt-6 text-xs text-gray-500">
+        <p>
+          &copy; 2025 <span className="text-secondary">CLAPIT SOLUTIONS.</span>All
+          Rights Reserved.
+        </p>
+        <p>
+          <span className="text-secondary">CLAPIT SOLUTIONS.</span> Pvt Ltd
+        </p>
       </div>
     </footer>
   );

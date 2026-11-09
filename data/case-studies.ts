@@ -186,6 +186,293 @@ export const allCaseStudies: (CaseStudy & {
     featured: true
   },
   {
+    id: "empulse",
+    industries: ["Ecommerce", "Fashion & Apparel"],
+    services: [
+      "Ecommerce Development",
+      "Web App Development",
+      "Admin Dashboard",
+      "SEO & Performance"
+    ],
+    title: "Empulse",
+    subtitle: "Premium Branded Clothing & Sneakers Store for Pakistan",
+    details:
+      "Empulse sells 100% original clothing and footwear from brands like Lacoste, On, Polo Ralph Lauren, Levi's, Adidas and Calvin Klein, delivered across Pakistan with a 'check first, then pay' promise.",
+    description:
+      "Empulse is a fast, mobile-first fashion store built on Next.js and Supabase. Shoppers browse by brand, category and size, check sizing with built-in size charts, and pay cash on delivery or by bank transfer after checking their order. Behind it, a custom admin panel runs products, stock, orders, customers, banners, promo codes and sales analytics.",
+    image: IMAGES.Empulse1.src,
+    alt: "Empulse – original branded clothing and shoes in Pakistan",
+    link: "https://www.empulse.store",
+    technologies: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Redux Toolkit",
+      "JWT Auth",
+      "Vercel"
+    ],
+    servicesProvided: [
+      { id: 1, name: "Ecommerce Storefront", icon: ShoppingBag },
+      { id: 2, name: "Cart & Checkout", icon: ShoppingCartIcon },
+      { id: 3, name: "COD & Bank Transfer Payments", icon: CreditCard },
+      { id: 4, name: "Admin Dashboard & Analytics", icon: BarChart2 },
+      { id: 5, name: "Supabase Database & Storage", icon: Database },
+      { id: 6, name: "SEO & Performance", icon: Search }
+    ],
+    objectives: [
+      "Launch a trusted online store for original branded fashion in Pakistan.",
+      "Build buyer confidence with cash on delivery and a 'check first, then pay' policy.",
+      "Make browsing by brand, category, colour and size fast on mobile.",
+      "Give the team one admin panel for products, stock, orders, promos and reporting."
+    ],
+    approachTitle: "Approach",
+    approachDescription:
+      "We built Empulse as a Next.js storefront backed by Supabase for the database, authentication and product image storage. The interface is mobile-first, with editorial hero banners, a brand strip, size charts and WhatsApp support. A secure, JWT-protected admin panel lets the team manage the catalogue and orders, run promo codes and banners, print shipping labels and track sales and inventory.",
+    data: {
+      sections: [
+        {
+          title: "Storefront & Brand Discovery",
+          description:
+            "An editorial, campaign-style home page that leads shoppers straight into brands and categories.",
+          subDescriptions: [
+            "Hero campaigns for featured drops, such as On Running.",
+            "Shop by brand: Lacoste, On, Polo Ralph Lauren, Levi's, Adidas, Vans, Calvin Klein, GANT and more.",
+            "Men's and women's collections with category and style navigation.",
+            "Nationwide delivery, '100% original' and 'first check, then pay' messages shown site-wide."
+          ],
+          images: [{ src: IMAGES.Empulse1, alt: "Empulse home page", isMobile: false }]
+        },
+        {
+          title: "Product Pages & Checkout",
+          description:
+            "Detailed product pages built to answer fit and authenticity questions before purchase.",
+          subDescriptions: [
+            "Image gallery with hover-to-zoom, colour and size selection with live stock.",
+            "Size chart for every product, plus sale pricing.",
+            "Cash on delivery and online bank transfer, with a one-tap copy of the account number.",
+            "Free shipping above Rs. 5,000 and an easy returns policy."
+          ],
+          images: [{ src: IMAGES.Empulse2, alt: "Empulse product page", isMobile: false }]
+        },
+        {
+          title: "Admin Panel",
+          description:
+            "A custom back office to run the store without touching code.",
+          subDescriptions: [
+            "Products, brands, categories and image uploads.",
+            "Order management with printable shipping labels.",
+            "Customers, promo codes and homepage banners.",
+            "Sales analytics and inventory insights."
+          ]
+        }
+      ]
+    },
+    results: [
+      { label: "Platform", value: "Web (mobile-first)" },
+      { label: "Payments", value: "COD & Bank Transfer" },
+      { label: "Delivery", value: "Nationwide, Pakistan" },
+      { label: "Status", value: "Live" }
+    ],
+    Conclusion:
+      "Empulse gives Pakistani shoppers a trustworthy way to buy original branded fashion online. Its fast storefront and 'check first, then pay' model build confidence with customers, and the admin panel keeps day-to-day operations simple for the team.",
+    featured: true
+  },
+  {
+    id: "levish",
+    industries: ["Ecommerce", "Fashion & Apparel"],
+    services: [
+      "Ecommerce Development",
+      "Web App Development",
+      "Admin Dashboard"
+    ],
+    title: "Levish",
+    subtitle: "Original Men's & Women's Fashion Store in Pakistan",
+    details:
+      "Levish is an online fashion store for original men's and women's clothing and sneakers from Lacoste, Ralph Lauren, Levi's and On, with delivery across Pakistan.",
+    description:
+      "Levish is a second fashion brand built on our Next.js and Supabase commerce platform and given its own identity. Shoppers explore curated edits and 'Shop by Style' collections, filter by size and colour, and order with cash on delivery or bank transfer. The admin panel manages products, orders, customers, promos, banners and analytics.",
+    image: IMAGES.Levish1.src,
+    alt: "Levish – original men's and women's fashion in Pakistan",
+    link: "https://www.levish.store",
+    technologies: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Redux Toolkit",
+      "Motion",
+      "Vercel"
+    ],
+    servicesProvided: [
+      { id: 1, name: "Brand Storefront", icon: Layout },
+      { id: 2, name: "Cart & Checkout", icon: ShoppingCartIcon },
+      { id: 3, name: "COD & Bank Transfer Payments", icon: CreditCard },
+      { id: 4, name: "Admin Dashboard", icon: BarChart2 },
+      { id: 5, name: "Supabase Backend", icon: Database },
+      { id: 6, name: "SEO & Social Sharing", icon: Search }
+    ],
+    objectives: [
+      "Launch a new fashion brand quickly on a proven commerce platform.",
+      "Give it a distinct look: editorial typography, soft colours and curated edits.",
+      "Make discovery by style, category and new arrivals effortless.",
+      "Keep operations in one admin panel shared with the platform."
+    ],
+    approachTitle: "Approach",
+    approachDescription:
+      "We reused the Empulse commerce engine (Next.js, Supabase and Redux Toolkit) and rebuilt the brand layer: logo, colours, editorial hero slides, 'Shop by Style' and 'New Arrivals' sections, and its own content pages. Motion-based transitions, WhatsApp support and SEO metadata with share images round out the launch, while the admin panel handles catalogue, orders and promotions.",
+    data: {
+      sections: [
+        {
+          title: "Editorial Storefront",
+          description:
+            "Campaign-style hero slides and curated collections set Levish apart from a standard store.",
+          subDescriptions: [
+            "Rotating 'The Men's Edit' and women's hero campaigns.",
+            "'Shop by Style': shoes, jackets, hoodies, sweatshirts and trousers.",
+            "'New Arrivals' placed right after the hero for fast discovery.",
+            "Announcement bar: '100% original', 'first check, then pay' and nationwide delivery."
+          ],
+          images: [{ src: IMAGES.Levish1, alt: "Levish home page", isMobile: false }]
+        },
+        {
+          title: "Product Experience",
+          description:
+            "Clean product pages focused on fit, colour and trust.",
+          subDescriptions: [
+            "Multi-image gallery with hover-to-zoom.",
+            "Colour and size selection with a size-chart helper.",
+            "Free shipping over Rs. 5,000 and easy returns.",
+            "Cash on delivery or online bank transfer at checkout."
+          ],
+          images: [{ src: IMAGES.Levish2, alt: "Levish product page", isMobile: false }]
+        },
+        {
+          title: "Shared Commerce Platform",
+          description:
+            "Built on the same engine as Empulse, so new brands launch faster and share improvements.",
+          subDescriptions: [
+            "Supabase database, auth and storage with a seed script for the catalogue.",
+            "Admin: products, orders, customers, banners, promo codes and analytics.",
+            "Printable shipping labels for order fulfilment."
+          ]
+        }
+      ]
+    },
+    results: [
+      { label: "Platform", value: "Web (mobile-first)" },
+      { label: "Built On", value: "Shared commerce engine" },
+      { label: "Delivery", value: "Nationwide, Pakistan" },
+      { label: "Status", value: "Live" }
+    ],
+    Conclusion:
+      "Levish shows how a shared commerce platform lets a new fashion brand launch with its own identity in a fraction of the time, without giving up the reliability and admin tools of a proven store.",
+    featured: true
+  },
+  {
+    id: "xmarketplace",
+    industries: ["Marketplace", "Classifieds", "Ecommerce"],
+    services: [
+      "Custom Product Development",
+      "Web App Development",
+      "Realtime Chat",
+      "Admin Dashboard"
+    ],
+    title: "X Marketplace",
+    subtitle: "Classified Marketplace and Official Store in One Platform",
+    details:
+      "X Marketplace lets people buy and sell anything locally, from vehicles and property to mobiles and fashion, and adds an official store with curated products and nationwide delivery.",
+    description:
+      "X Marketplace combines two products in one. The first is a location-aware classifieds marketplace where users post ads, browse by category and area, save favourites and chat with sellers in real time. The second is an official store with cart and checkout. A separate admin console moderates ads, manages store products and orders, and controls user roles.",
+    image: IMAGES.XMarketplace1.src,
+    alt: "X Marketplace – classifieds marketplace and official store",
+    technologies: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "PostgreSQL",
+      "Socket.IO",
+      "Leaflet Maps",
+      "Zod"
+    ],
+    servicesProvided: [
+      { id: 1, name: "Marketplace Product Design", icon: Layout },
+      { id: 2, name: "Post-an-Ad & Listings", icon: Box },
+      { id: 3, name: "Realtime Buyer–Seller Chat", icon: Users },
+      { id: 4, name: "Official Store & Checkout", icon: ShoppingCartIcon },
+      { id: 5, name: "Auth (Email & Google)", icon: LockIcon },
+      { id: 6, name: "Admin & Moderation Console", icon: ShieldCheck }
+    ],
+    objectives: [
+      "Let anyone post an ad in minutes and reach buyers nearby.",
+      "Keep buyers and sellers talking inside the platform with realtime chat.",
+      "Add a trusted official store alongside user listings.",
+      "Give admins moderation and store tools with role-based access."
+    ],
+    approachTitle: "Approach",
+    approachDescription:
+      "We built X Marketplace on Next.js with Supabase for authentication (email and Google), PostgreSQL data and photo storage. A custom Node server adds Socket.IO for realtime conversations, attachments and blocking. Leaflet maps and geocoding power location-based browsing. A companion admin app on the same database handles ad moderation, store products, orders and user roles.",
+    data: {
+      sections: [
+        {
+          title: "Classifieds Marketplace",
+          description:
+            "A familiar, fast way to discover and list items across popular categories.",
+          subDescriptions: [
+            "Categories: vehicles, bikes, property sale and rent, mobiles, electronics, furniture, animals, fashion and services.",
+            "Location picker and map-based browsing for nearby deals.",
+            "Post an ad with photos, price and contact details.",
+            "Favourites, buyer requests and a personal listings dashboard."
+          ],
+          images: [{ src: IMAGES.XMarketplace1, alt: "X Marketplace home page", isMobile: false }]
+        },
+        {
+          title: "Official Store",
+          description:
+            "A curated store inside the marketplace with genuine stock and nationwide delivery.",
+          subDescriptions: [
+            "Switch between Marketplace and Official Store in one tap.",
+            "Product catalogue, cart and checkout for official products.",
+            "Products and orders managed from the admin console."
+          ],
+          images: [{ src: IMAGES.XMarketplace2, alt: "X Marketplace official store", isMobile: false }]
+        },
+        {
+          title: "Realtime Chat & Notifications",
+          description:
+            "Buyers and sellers negotiate safely without leaving the platform.",
+          subDescriptions: [
+            "Socket.IO conversations with message history.",
+            "Attachments, user blocking and notifications."
+          ]
+        },
+        {
+          title: "Admin Console",
+          description:
+            "A separate admin app on the same Supabase project.",
+          subDescriptions: [
+            "Dashboard for users, products, categories, orders and ads.",
+            "Ad moderation: publish, reject or archive.",
+            "Role-based access: Super Admin, Admin, Store Staff and Moderator."
+          ]
+        }
+      ]
+    },
+    results: [
+      { label: "Products", value: "Marketplace + Store" },
+      { label: "Realtime", value: "Socket.IO Chat" },
+      { label: "Sign-in", value: "Email & Google" },
+      { label: "Admin", value: "Role-based console" }
+    ],
+    Conclusion:
+      "X Marketplace brings classifieds and an official store together on one modern platform. Realtime chat, location-aware discovery and a dedicated admin console make it safe for users and easy for the team to run.",
+    featured: true
+  },
+  {
     id: "peptalk",
     industries: ["HealthTech", "Parenting"],
     services: ["Mobile App Development"],

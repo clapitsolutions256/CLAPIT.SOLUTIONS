@@ -76,6 +76,12 @@ import Watch3 from "./watch3.png";
 import Watch4 from "./watch4.png";
 import Watch5 from "./watch5.png";
 import Watch6 from "./watch6.png";
+import Levish1 from "./levish1.jpg";
+import Levish2 from "./levish2.jpg";
+import Empulse1 from "./empulse1.jpg";
+import Empulse2 from "./empulse2.jpg";
+import XMarketplace1 from "./xmarketplace1.jpg";
+import XMarketplace2 from "./xmarketplace2.jpg";
 import CtaContact from "./ctacontact_img.webp";
 import Genativeai from "./genativeai.jpg";
 import WebAi from "./WEBAI.jpg";
@@ -213,6 +219,12 @@ export const IMAGES: Record<string, any> = {
   Watch4,
   Watch5,
   Watch6,
+  Levish1,
+  Levish2,
+  Empulse1,
+  Empulse2,
+  XMarketplace1,
+  XMarketplace2,
   CtaContact,
   Genativeai,
   WebAi,

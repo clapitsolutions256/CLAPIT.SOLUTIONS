@@ -97,13 +97,13 @@ const LoopVideo: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-transparent to-transparent" />
         </div>
 
-        <div className="relative z-10 flex min-h-[calc(100svh-96px)] flex-col justify-between px-6 pb-8 pt-16 sm:px-10 md:px-14 lg:px-20 lg:pt-24">
+        <div className="relative z-10 flex min-h-[calc(100svh-108px)] flex-col justify-between gap-6 px-5 pb-5 pt-8 sm:min-h-[calc(100svh-96px)] sm:px-10 sm:pb-8 sm:pt-16 md:px-14 lg:px-20 lg:pt-24">
           <motion.div className="max-w-3xl" variants={container} initial="hidden" animate="visible">
-            <motion.p variants={item} className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur">
+            <motion.p variants={item} className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-medium text-zinc-200 backdrop-blur sm:mb-6 sm:px-3.5 sm:py-1.5 sm:text-xs [@media(max-height:700px)]:hidden">
               <span className="h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true" />
               AI-powered development &amp; branding agency
             </motion.p>
-            <motion.h1 variants={item} className="font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <motion.h1 variants={item} className="font-heading text-[2.1rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl sm:leading-[1.05] lg:text-7xl">
               Innovate &amp; build with{" "}
               <span className="relative inline-block text-secondary">
                 AI-powered
@@ -117,21 +117,21 @@ const LoopVideo: React.FC = () => {
               </span>{" "}
               solutions
             </motion.h1>
-            <motion.p variants={item} className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300 sm:text-xl">
+            <motion.p variants={item} className="mt-4 max-w-2xl text-[15px] leading-relaxed text-zinc-300 sm:mt-6 sm:text-xl">
               We design, build and scale web, mobile and AI solutions — and the
               brands around them — for companies that want to grow faster.
             </motion.p>
-            <motion.div variants={item} className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <motion.div variants={item} className="mt-6 flex flex-col gap-2.5 sm:mt-10 sm:flex-row sm:gap-3">
               <Link
                 href="/contact-us"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 text-base font-semibold text-white shadow-[0_10px_30px_rgba(219,26,26,0.35)] transition-all hover:-translate-y-0.5 hover:bg-brand-600"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-secondary px-7 text-[15px] font-semibold sm:h-12 sm:text-base text-white shadow-[0_10px_30px_rgba(219,26,26,0.35)] transition-all hover:-translate-y-0.5 hover:bg-brand-600"
               >
                 Book a free consultation
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Link>
               <Link
                 href="/case-studies"
-                className="inline-flex h-12 items-center justify-center rounded-lg border border-white/25 bg-white/5 px-7 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/15"
+                className="inline-flex h-11 items-center justify-center rounded-lg border border-white/25 bg-white/5 px-7 text-[15px] font-semibold sm:h-12 sm:text-base text-white backdrop-blur transition-colors hover:bg-white/15"
               >
                 View our work
               </Link>
@@ -139,7 +139,7 @@ const LoopVideo: React.FC = () => {
           </motion.div>
 
           <motion.div
-            className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:mt-10 lg:grid-cols-4 [@media(max-height:640px)]:hidden"
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.7 } } }}
             initial="hidden"
             animate="visible"
@@ -148,14 +148,14 @@ const LoopVideo: React.FC = () => {
               <motion.div
                 key={feature.title}
                 variants={item}
-                className="group flex items-center gap-4 bg-ink/70 px-5 py-5 backdrop-blur-md transition-colors duration-300 hover:bg-ink/90"
+                className="group flex items-center gap-2.5 bg-ink/70 px-3 py-3 backdrop-blur-md transition-colors duration-300 hover:bg-ink/90 sm:gap-4 sm:px-5 sm:py-5"
               >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-secondary/15 transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary/25">
-                  <feature.icon className="h-5 w-5 text-secondary" aria-hidden="true" />
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-secondary/15 sm:h-10 sm:w-10 transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary/25">
+                  <feature.icon className="h-4 w-4 text-secondary sm:h-5 sm:w-5" aria-hidden="true" />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{feature.title}</p>
-                  <p className="mt-0.5 text-sm text-zinc-400">{feature.description}</p>
+                <div className="min-w-0">
+                  <p className="text-[13px] font-semibold leading-tight text-white sm:text-sm">{feature.title}</p>
+                  <p className="mt-0.5 hidden text-sm text-zinc-400 sm:block">{feature.description}</p>
                 </div>
               </motion.div>
             ))}

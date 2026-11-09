@@ -57,7 +57,8 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="[font-family:var(--font-futura)] [letter-spacing:0.01em] bg-dark text-light px-4 lg:mx-16 mx-0 lg:my-10 my-0 py-10 md:px-20 lg:rounded-[30px] rounded-t-[30px]">
+    <div className="px-3 pb-3 sm:px-4 sm:pb-4 lg:pb-10">
+    <footer className="[font-family:var(--font-futura)] [letter-spacing:0.01em] mx-auto max-w-[1440px] bg-dark text-light px-4 py-10 md:px-20 rounded-[30px]">
       <div className="block md:hidden ">
         <div className="flex justify-center space-x-4 mb-6 text-xl ">
           {[FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube].map(
@@ -254,6 +255,7 @@ const Footer = () => {
         </p>
       </div>
     </footer>
+    </div>
   );
 };
 

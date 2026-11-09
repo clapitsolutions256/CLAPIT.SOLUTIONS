@@ -132,7 +132,7 @@ export const Header = () => {
   return (
     <div className="[font-family:var(--font-futura)] [letter-spacing:0.01em]">
       <nav
-        className={`fixed top-0 left-0 right-0 px-4   m-4 rounded-2xl z-[1000] transition-all duration-300 w-full sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px] mx-auto ${
+        className={`fixed top-4 left-3 right-3 sm:left-4 sm:right-4 mx-auto max-w-[1440px] px-4 rounded-2xl z-[1000] transition-all duration-300 ${
           scrolled || isMobileMenuOpen
             ? "bg-white shadow-lg dark:bg-dark"
             : "bg-transparent"

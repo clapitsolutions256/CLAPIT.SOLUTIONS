@@ -51,60 +51,50 @@ export default function BlogCard({
   category,
 }: BlogCardProps) {
   const hasImage = image && (typeof image === "string" ? image.length > 0 : true);
-  
-  return (
-    <Link href={`/blogs/${id}`} className="group block h-full">
-      <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden h-full flex flex-col border border-lightMedium/20 hover:border-secondary/30 hover:-translate-y-2">
-        <div className="relative overflow-hidden h-56 md:h-64 group-hover:scale-105 transition-transform duration-500">
-          {hasImage ? (
-            <>
-              <Image
-                src={image}
-                height={500}
-                width={500}
-                alt={title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </>
-          ) : (
-            generatePlaceholder(title, category)
-          )}
-          
-          {category && (
-            <div className="absolute top-4 left-4 z-20">
-              <span className="px-3 py-1 bg-secondary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full shadow-lg">
-                {category}
-              </span>
-            </div>
-          )}
-        </div>
 
-        <div className="p-6 flex-1 flex flex-col">
-          <h2 className="text-xl md:text-2xl font-bold mb-3 text-dark group-hover:text-secondary transition-colors duration-300 heading line-clamp-2">
-            {title}
-          </h2>
-          <p className="text-darkMedium mb-4 line-clamp-3 flex-1">
-            {description}
-          </p>
-          
-          <div className="flex items-center text-secondary font-semibold text-sm group-hover:gap-2 transition-all duration-300">
-            <span>Continue Reading</span>
-            <svg
-              className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
-        </div>
+  return (
+    <Link
+      href={`/blogs/${id}`}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover"
+    >
+      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
+        {hasImage ? (
+          <Image
+            src={image}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            alt=""
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          generatePlaceholder(title, category)
+        )}
+        {category && (
+          <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink shadow-sm">
+            {category}
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-ink transition-colors duration-300 group-hover:text-secondary sm:text-xl">
+          {title}
+        </h3>
+        <p className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-zinc-600">
+          {description}
+        </p>
+        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary">
+          Read article
+          <svg
+            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
       </div>
     </Link>
   );

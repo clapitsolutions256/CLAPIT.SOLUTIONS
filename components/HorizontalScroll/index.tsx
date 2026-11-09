@@ -1,102 +1,105 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface SectionData {
   id: string | number;
   content: React.ReactNode;
+  /** Tailwind classes for the panel background (defaults to white). */
+  className?: string;
 }
 
 interface HorizontalScrollProps {
   sections: SectionData[];
+  label?: string;
 }
 
-export default function HorizontalScroll({ sections }: HorizontalScrollProps) {
+/**
+ * Pins the section and scrubs its panels sideways as the page scrolls.
+ * - Desktop (lg+) with motion allowed: pinned horizontal track + progress bar.
+ * - Mobile / reduced motion: panels simply stack vertically.
+ * Uses the page's single Lenis instance (no extra smooth-scroller) and only
+ * cleans up its own ScrollTriggers.
+ */
+export default function HorizontalScroll({ sections, label }: HorizontalScrollProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 5000,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      orientation: "horizontal",
-      smoothWheel: true,
-    });
-
+  useLayoutEffect(() => {
     const section = sectionRef.current;
-    const items = gsap.utils.toArray<HTMLElement>(".horizontal__item");
+    const track = trackRef.current;
+    if (!section || !track) return;
 
-    if (section && items.length > 0) {
-      const totalWidth = section.scrollWidth - section.offsetWidth;
+    const mm = gsap.matchMedia();
+    mm.add(
+      "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const distance = () => track.scrollWidth - window.innerWidth;
 
-      const horizontalScroll = gsap.to(items, {
-        xPercent: -100 * (items.length - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${totalWidth}`,
-          scrub: true,
-          pin: true,
-        },
-      });
+        const tween = gsap.to(track, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${distance()}`,
+            scrub: 0.6,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.transform = `scaleX(${self.progress})`;
+              }
+            },
+          },
+        });
 
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+        return () => {
+          tween.scrollTrigger?.kill();
+          tween.kill();
+          gsap.set(track, { clearProps: "transform" });
+        };
       }
-      requestAnimationFrame(raf);
+    );
 
-      return () => {
-        lenis.destroy();
-        horizontalScroll.kill();
-        ScrollTrigger.getAll().forEach((st) => st.kill());
-      };
-    }
-  }, [sections?.length]);
+    return () => mm.revert();
+  }, [sections.length]);
 
   if (!sections?.length) return null;
 
   return (
-    <section
-      ref={sectionRef}
-      style={{
-        display: "flex",
-        overflow: "hidden",
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
+    <section ref={sectionRef} aria-label={label} className="relative overflow-hidden">
       <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-        }}
+        ref={trackRef}
+        className="flex flex-col lg:h-screen lg:w-max lg:flex-row motion-reduce:lg:h-auto motion-reduce:lg:w-full motion-reduce:lg:flex-col"
       >
         {sections.map((section) => (
           <div
             key={section.id}
-            className="horizontal__item"
-            style={{
-              flex: "0 0 100vw",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100vh",
-              backgroundColor: "#f0f0f0",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
+            className={`relative flex min-h-[80vh] w-full items-center lg:h-screen lg:w-screen lg:flex-shrink-0 motion-reduce:lg:h-auto motion-reduce:lg:min-h-[80vh] ${
+              section.className ?? "bg-white"
+            }`}
           >
             {section.content}
           </div>
         ))}
+      </div>
+
+      {/* Scroll progress (desktop only) */}
+      <div
+        className="pointer-events-none absolute bottom-8 left-1/2 hidden h-1 w-48 -translate-x-1/2 overflow-hidden rounded-full bg-zinc-400/30 lg:block motion-reduce:lg:hidden"
+        aria-hidden="true"
+      >
+        <div
+          ref={progressRef}
+          className="h-full w-full origin-left scale-x-0 rounded-full bg-secondary"
+        />
       </div>
     </section>
   );

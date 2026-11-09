@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import AnimatedSection1 from "./AnimatedSection1";
+import { Plus } from "lucide-react";
 import FAQSchema from "./StructuredData/FAQSchema";
+import { cn } from "@/utilities/ui";
 
 interface FAQItem {
   title: string;
@@ -17,103 +19,115 @@ interface FAQSectionProps {
 }
 
 const FAQSection: React.FC<FAQSectionProps> = ({ title, subtitle, faqs }) => {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const baseId = useId();
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq((prev) => (prev === index ? null : index));
-  };
-  // Convert FAQ items to schema format
   const faqSchemaItems = faqs.map((faq) => ({
     question: faq.title,
     answer: faq.answer,
   }));
 
   return (
-    <div className="bg-gradient-to-b from-gray-50/50 to-white/30 backdrop-blur-lg">
+    <section className="section bg-white">
       <FAQSchema faqs={faqSchemaItems} />
-      <section className="container mx-auto px-4 py-20">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection1>
-            <h2 className="lg:text-6xl text-4xl font-extrabold text-gray-900 text-center mb-6">
-              {title}{" "}
-              <span className="text-transparent bg-clip-text bg-secondary">
-                Questions
-              </span>
+      <div className="container grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <motion.div
+            className="lg:sticky lg:top-28"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="eyebrow mb-4">FAQ</p>
+            <h2 className="font-heading text-3xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-4xl">
+              {title}
             </h2>
-          </AnimatedSection1>
-          <p className="text-gray-500 text-center lg:text-[22px] text-lg mb-16 max-w-3xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-20%" }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20"
-                >
-                  <div
-                    className="flex justify-between items-center p-7 cursor-pointer"
-                    onClick={() => toggleFaq(index)}
-                  >
-                    <h3
-                      className={`text-xl font-semibold pr-4 ${
-                        openFaq === index
-                          ? "bg-secondary bg-clip-text text-transparent"
-                          : "text-dark"
-                      }`}
-                    >
-                      {faq.title}
-                    </h3>
-                    <motion.span
-                      animate={{ rotate: openFaq === index ? 180 : 0 }}
-                      className={`text-2xl ${
-                        openFaq === index ? "text-secondary " : "text-dark"
-                      }`}
-                    >
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M6 9l6 6 6-6" />
-                      </svg>
-                    </motion.span>
-                  </div>
+            <p className="mt-4 text-lg leading-relaxed text-zinc-600">{subtitle}</p>
+            <p className="mt-8 text-[15px] text-zinc-600">
+              Can&apos;t find what you&apos;re looking for?{" "}
+              <Link href="/contact-us" className="font-semibold text-secondary hover:underline">
+                Talk to our team →
+              </Link>
+            </p>
+          </motion.div>
+        </div>
 
-                  <AnimatePresence>
-                    {openFaq === index && (
+        <div className="lg:col-span-8">
+          <motion.ul
+            className="divide-y divide-zinc-200 border-y border-zinc-200"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
+          >
+            {faqs.map((faq, index) => {
+              const open = openFaq === index;
+              const panelId = `${baseId}-panel-${index}`;
+              const buttonId = `${baseId}-button-${index}`;
+              return (
+                <motion.li
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+                  }}
+                >
+                  <h3 className="m-0">
+                    <button
+                      id={buttonId}
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => setOpenFaq(open ? null : index)}
+                      className="flex w-full items-start justify-between gap-6 py-6 text-left"
+                    >
+                      <span
+                        className={cn(
+                          "font-sans text-base font-semibold leading-snug transition-colors sm:text-lg",
+                          open ? "text-secondary" : "text-ink hover:text-secondary"
+                        )}
+                      >
+                        {faq.title}
+                      </span>
+                      <span
+                        className={cn(
+                          "mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border transition-all duration-300",
+                          open
+                            ? "rotate-45 border-secondary bg-secondary text-white"
+                            : "border-zinc-300 text-ink"
+                        )}
+                        aria-hidden="true"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </h3>
+                  <AnimatePresence initial={false}>
+                    {open && (
                       <motion.div
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-7 pb-7 text-gray-600 leading-relaxed border-t border-gray-100/50 mt-2">
+                        <p className="max-w-3xl pb-6 pr-12 text-[15px] leading-relaxed text-zinc-600 sm:text-base">
                           {faq.answer}
-                        </div>
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.li>
+              );
+            })}
+          </motion.ul>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

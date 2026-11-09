@@ -79,130 +79,80 @@ export default function DropdownMenu({
   const hasMarketing = marketingItems.length > 0;
 
   const ServiceCard = ({ item }: { item: any }) => (
-<motion.div key={item.title || item.id} variants={itemVariants}>
-  <Link
-    href={item.href}
-    onClick={onClose}
-    className="
-      block lg:p-4 p-2 rounded-xl relative
-
-      border border-[#d8d5d3]
-      shadow-[0_2px_4px_rgba(0,0,0,0.08),0_6px_12px_rgba(0,0,0,0.12)]
-      hover:-translate-y-1 transition-all duration-300
-      lg:h-[16vh] h-[20vh] overflow-hidden
-      before:absolute before:inset-1 before:rounded-lg
-      before:bg-gradient-to-br before:from-[#f4f1ef] before:to-[#e6e0dd]
-      before:shadow-[inset_3px_3px_8px_rgba(0,0,0,0.12),
-                      inset_-3px_-3px_8px_rgba(255,255,255,0.4)]
-      before:z-0
-    "
-  >
-    <div className="relative z-10">
-      <h3 className="lg:font-medium font-bold lg:text-[16px] text-[12px] text-dark mb-1">
-        {item.title}
-      </h3>
-
-      {item.description && (
-        <p className="sm:text-sm text-xs text-gray-500">
-          {item.description.length > 100
-            ? item.description.slice(0, 110) + "..."
-            : item.description}
-        </p>
-      )}
-    </div>
-  </Link>
-</motion.div>
+    <motion.div key={item.title || item.id} variants={itemVariants}>
+      <Link
+        href={item.href}
+        onClick={onClose}
+        className="group block h-full rounded-xl border border-transparent p-4 transition-colors hover:border-zinc-200 hover:bg-zinc-50"
+      >
+        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-ink group-hover:text-secondary">
+          {item.title}
+          <span aria-hidden="true" className="translate-x-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">→</span>
+        </h3>
+        {item.description && (
+          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-zinc-600">
+            {item.description}
+          </p>
+        )}
+      </Link>
+    </motion.div>
   );
 
+  const showDev = (activeTab === "development" && hasDevelopment) || (!hasMarketing && hasDevelopment);
+  const showMarketing = (activeTab === "marketing" && hasMarketing) || (!hasDevelopment && hasMarketing);
+  const items = showDev ? devItems : showMarketing ? marketingItems : [];
+
   return (
-    <div>
-      <motion.div
-        className="w-full bg-white dark:bg-dark rounded-xl shadow-lg overflow-hidden max-h-[90vh] md:max-h-none flex flex-col"
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        variants={containerVariants}
-      >
-        <style>
-          {`
-          ::-webkit-scrollbar {
-            display: none;
-          }
-        `}
-        </style>
-
-        {/* Tabs */}
-        {(hasDevelopment && hasMarketing) && (
-          <div className="border-b border-gray-200 dark:border-gray-700 px-6 pt-4">
-            <div className="flex space-x-1">
+    <motion.div
+      className="flex max-h-[80vh] w-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-[0_24px_64px_rgba(16,16,20,0.18)]"
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={containerVariants}
+    >
+      {hasDevelopment && hasMarketing && (
+        <div className="flex items-center justify-between border-b border-zinc-200 px-6">
+          <div className="flex gap-6" role="tablist" aria-label="Service categories">
+            {(["development", "marketing"] as const).map((tab) => (
               <button
-                onClick={() => setActiveTab("development")}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === "development"
-                    ? "text-secondary border-b-2 border-secondary"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={activeTab === tab}
+                onClick={() => setActiveTab(tab)}
+                className={`-mb-px border-b-2 py-4 text-sm font-semibold capitalize transition-colors ${
+                  activeTab === tab
+                    ? "border-secondary text-ink"
+                    : "border-transparent text-zinc-500 hover:text-ink"
                 }`}
               >
-                Development
+                {tab}
               </button>
-              <button
-                onClick={() => setActiveTab("marketing")}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === "marketing"
-                    ? "text-secondary border-b-2 border-secondary"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                }`}
-              >
-                Marketing
-              </button>
-            </div>
+            ))}
           </div>
-        )}
-
-        <div className="overflow-y-auto flex-1 " style={scrollbarHideStyles}>
-          <div className="p-6">
-            {/* Development Tab Content */}
-            {((activeTab === "development" && hasDevelopment) || (!hasMarketing && hasDevelopment)) && (
-              <div>
-                {(!hasDevelopment || !hasMarketing) && (
-                  <h2 className="text-2xl font-bold text-light mb-4">Development</h2>
-                )}
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {devItems.slice(0, 6).map((item) => (
-                    <ServiceCard key={item.title || item.id} item={item} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Marketing Tab Content */}
-            {((activeTab === "marketing" && hasMarketing) || (!hasDevelopment && hasMarketing)) && (
-              <div>
-                {(!hasDevelopment || !hasMarketing) && (
-                  <h2 className="text-2xl font-bold text-light mb-4">Marketing</h2>
-                )}
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {marketingItems.slice(0, 6).map((item) => (
-                    <ServiceCard key={item.title || item.id} item={item} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-400 z-[999] p-4">
           <Link
             href={seeAll}
-            onClick={() => {
-              onClose();
-            }}
-            className="w-full text-left px-4 py-2 cursor-pointer text-sm text-gray-500 light:text-secondary dark:text-primary dark:light:text-secondary transition-colors"
+            onClick={onClose}
+            className="hidden text-sm font-semibold text-secondary hover:underline sm:inline"
           >
             View all {title} →
           </Link>
         </div>
-      </motion.div>
-    </div>
+      )}
+
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4" style={scrollbarHideStyles}>
+        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3">
+          {items.slice(0, 9).map((item: any) => (
+            <ServiceCard key={item.title || item.id} item={item} />
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-zinc-200 px-6 py-4 sm:hidden">
+        <Link href={seeAll} onClick={onClose} className="text-sm font-semibold text-secondary">
+          View all {title} →
+        </Link>
+      </div>
+    </motion.div>
   );
 }

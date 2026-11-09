@@ -3,7 +3,8 @@ import { IMAGES } from "@/public/images";
 import React, { useEffect, useState } from "react";
 import NextImage from "next/image";
 import Link from "next/link";
-import { Monitor, Cpu, BarChart3, Headphones } from "lucide-react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { Monitor, Cpu, BarChart3, Headphones, ArrowRight } from "lucide-react";
 
 const IMAGES_ARRAY = [
   IMAGES.slider1,
@@ -43,8 +44,20 @@ const FEATURES = [
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 const LoopVideo: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const reduce = useReducedMotion();
+
+  const container: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+  };
+  const item: Variants = {
+    hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 28, filter: "blur(8px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: EASE } },
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -60,84 +73,96 @@ const LoopVideo: React.FC = () => {
   }, [currentIndex]);
 
   return (
-    <div className="px-4 pt-24 pb-4">
-      <div className="container mx-auto relative w-full min-h-[calc(100vh-7rem)] overflow-hidden rounded-[2rem]">
-        <div className="absolute inset-0 pointer-events-none">
+    <section className="px-3 pb-3 pt-[84px] sm:px-4">
+      <div className="relative mx-auto w-full max-w-[1440px] overflow-hidden rounded-3xl bg-ink">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           {SLIDES.map((src: string, index: number) => (
             <NextImage
               key={src}
               src={src}
-              alt="Technology background"
-              aria-hidden="true"
+              alt=""
               fill
-              className="absolute inset-0 object-cover transition-opacity duration-1000"
+              priority={index === 0}
+              sizes="100vw"
+              className="absolute inset-0 object-cover transition-[opacity,transform] ease-out motion-reduce:transition-opacity"
               style={{
-                opacity: index === currentIndex ? 0.85 : 0,
-                filter: "brightness(0.75)",
-                willChange: "opacity",
+                opacity: index === currentIndex ? 0.55 : 0,
+                transform: index === currentIndex && !reduce ? "scale(1.08)" : "scale(1)",
+                transitionDuration: index === currentIndex ? "1000ms, 6000ms" : "1000ms, 1000ms",
+                willChange: "opacity, transform",
               }}
             />
           ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-transparent to-transparent" />
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
-
-        <div className="relative z-10 flex flex-col justify-center h-full min-h-[calc(100vh-7rem)] px-8 sm:px-12 md:px-16 lg:px-20 pt-8 pb-20 sm:pb-40">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-              Innovate & Build with{" "}
-              <span className="text-secondary underline decoration-secondary decoration-4 underline-offset-8">
-                AI-Powered
+        <div className="relative z-10 flex min-h-[calc(100svh-96px)] flex-col justify-between px-6 pb-8 pt-16 sm:px-10 md:px-14 lg:px-20 lg:pt-24">
+          <motion.div className="max-w-3xl" variants={container} initial="hidden" animate="visible">
+            <motion.p variants={item} className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true" />
+              AI-powered development &amp; branding agency
+            </motion.p>
+            <motion.h1 variants={item} className="font-heading text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Innovate &amp; build with{" "}
+              <span className="relative inline-block text-secondary">
+                AI-powered
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute -bottom-1 left-0 h-1 w-full origin-left rounded-full bg-secondary/70"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
+                />
               </span>{" "}
-              Solutions
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-light mb-10 max-w-2xl leading-relaxed">
-              Transform your ideas into reality with cutting-edge AI-driven
-              development and strategic branding for enduring growth.
-            </p>
-            <div className="flex flex-row gap-4">
-              <Link
-                href="/services"
-                className="inline-flex items-center justify-center rounded-md border-2 border-secondary text-secondary px-5 sm:px-7 py-3 font-semibold hover:bg-secondary hover:text-white transition-colors text-sm sm:text-base"
-              >
-                Learn More
-              </Link>
+              solutions
+            </motion.h1>
+            <motion.p variants={item} className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300 sm:text-xl">
+              We design, build and scale web, mobile and AI solutions — and the
+              brands around them — for companies that want to grow faster.
+            </motion.p>
+            <motion.div variants={item} className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/contact-us"
-                className="inline-flex items-center justify-center rounded-md bg-dark/80 backdrop-blur text-white border border-darkMedium px-5 sm:px-7 py-3 font-semibold hover:bg-dark transition-colors text-sm sm:text-base"
+                className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 text-base font-semibold text-white shadow-[0_10px_30px_rgba(219,26,26,0.35)] transition-all hover:-translate-y-0.5 hover:bg-brand-600"
               >
-                Talk to an Expert
+                Book a free consultation
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 z-20 px-8 sm:px-12 md:px-16 lg:px-20 pb-8">
-          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {FEATURES.map((feature) => (
-              <div
-                key={feature.title}
-                className="flex items-center gap-4 bg-white/95 backdrop-blur rounded-xl px-5 py-4 shadow-lg"
+              <Link
+                href="/case-studies"
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-white/25 bg-white/5 px-7 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/15"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
-                  <feature.icon className="w-5 h-5 text-secondary" />
+                View our work
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.7 } } }}
+            initial="hidden"
+            animate="visible"
+          >
+            {FEATURES.map((feature) => (
+              <motion.div
+                key={feature.title}
+                variants={item}
+                className="group flex items-center gap-4 bg-ink/70 px-5 py-5 backdrop-blur-md transition-colors duration-300 hover:bg-ink/90"
+              >
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-secondary/15 transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary/25">
+                  <feature.icon className="h-5 w-5 text-secondary" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="font-semibold text-dark text-sm leading-tight">
-                    {feature.title}
-                  </p>
-                  <p className="text-medium text-xs leading-tight mt-0.5">
-                    {feature.description}
-                  </p>
+                  <p className="text-sm font-semibold text-white">{feature.title}</p>
+                  <p className="mt-0.5 text-sm text-zinc-400">{feature.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-
       </div>
-    </div>
+    </section>
   );
 };
 

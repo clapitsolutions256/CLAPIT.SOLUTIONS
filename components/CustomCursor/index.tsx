@@ -1,101 +1,81 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
+/**
+ * Brand cursor: a precise dot plus a lagging ring that grows over links and
+ * buttons. Only mounts on fine-pointer devices with motion allowed; the native
+ * cursor stays visible so nothing is ever hidden from the user.
+ */
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isPointer, setIsPointer] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const cursorX = useSpring(0, {
-    damping: 25,
-    stiffness: 150,
-    mass: 0.3,
-  });
-
-  const cursorY = useSpring(0, {
-    damping: 25,
-    stiffness: 150,
-    mass: 0.3,
-  });
+  const x = useMotionValue(-100);
+  const y = useMotionValue(-100);
+  const ringX = useSpring(x, { stiffness: 260, damping: 26, mass: 0.5 });
+  const ringY = useSpring(y, { stiffness: 260, damping: 26, mass: 0.5 });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-      setMousePosition({ x: e.clientX - 16, y: e.clientY - 16 });
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || reduce) return;
+    setEnabled(true);
+
+    const move = (e: MouseEvent) => {
+      x.set(e.clientX);
+      y.set(e.clientY);
+      setVisible(true);
     };
-
-    const handleElementChange = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const isClickable =
-        target.tagName.toLowerCase() === "button" ||
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "input" ||
-        !!target.closest("button") ||
-        !!target.closest("a") ||
-        !!target.closest("input") ||
-        target.getAttribute("role") === "button";
-
-      setIsPointer(Boolean(isClickable));
+    const over = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      setHovering(
+        !!t.closest("a, button, [role='button'], input, textarea, select, label")
+      );
     };
+    const leave = () => setVisible(false);
+    const down = () => setPressed(true);
+    const up = () => setPressed(false);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseover", handleElementChange);
-
+    window.addEventListener("mousemove", move, { passive: true });
+    window.addEventListener("mouseover", over, { passive: true });
+    document.documentElement.addEventListener("mouseleave", leave);
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseover", handleElementChange);
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseover", over);
+      document.documentElement.removeEventListener("mouseleave", leave);
+      window.removeEventListener("mousedown", down);
+      window.removeEventListener("mouseup", up);
     };
-  }, [cursorX, cursorY]);
+  }, [x, y]);
+
+  if (!enabled) return null;
 
   return (
-    <>
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[99999]">
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[99999999] mix-blend-difference"
-        style={{
-          x: cursorX,
-          y: cursorY,
+        className="absolute left-0 top-0 rounded-full border border-secondary"
+        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
+        animate={{
+          width: hovering ? 52 : 32,
+          height: hovering ? 52 : 32,
+          backgroundColor: hovering ? "rgba(219,26,26,0.10)" : "rgba(219,26,26,0)",
+          opacity: visible ? 1 : 0,
+          scale: pressed ? 0.85 : 1,
         }}
-      >
-        <motion.div
-          className="w-full h-full bg-secondary rounded-full"
-          animate={{
-            scale: isPointer ? 1 : 1,
-            opacity: isPointer ? 0.5 : 0.3,
-          }}
-          transition={{
-            type: "spring",
-            damping: 20,
-            stiffness: 200,
-          }}
-        />
-      </motion.div>
+        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      />
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          x: mousePosition.x + 14,
-          y: mousePosition.y + 14,
-        }}
-        transition={{
-          type: "spring",
-          damping: 30,
-          stiffness: 250,
-          mass: 0.5,
-        }}
-      >
-        <motion.div
-          className="w-full h-full bg-secondary rounded-full"
-          animate={{
-            scale: isPointer ? 0 : 1,
-          }}
-          transition={{
-            type: "spring",
-            damping: 20,
-            stiffness: 200,
-          }}
-        />
-      </motion.div>
-    </>
+        className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full bg-secondary"
+        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
+        animate={{ opacity: visible && !hovering ? 1 : 0 }}
+        transition={{ duration: 0.15 }}
+      />
+    </div>
   );
 }

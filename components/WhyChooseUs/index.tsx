@@ -1,463 +1,282 @@
 "use client";
 
-import { useState } from "react";
-import HorizontalScroll from "../HorizontalScroll";
-import AnimatedSection1 from "../AnimatedSection1";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowRight,
+  Clock,
+  Code2,
+  LineChart,
+  MessagesSquare,
+  Palette,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 import { IMAGES } from "@/public/images";
-import { motion, Variants } from "framer-motion";
-import RightLongArrowIcon from "@/public/svg/RightLongArrowIcon";
-import Link from "next/link";
+import HorizontalScroll from "../HorizontalScroll";
+import { Reveal, RevealGroup, RevealItem } from "../ui/Reveal";
+import CountUp from "../ui/CountUp";
+import MagneticButton from "../ui/MagneticButton";
 
-export default function WhyChooseUs() {
-  const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 100, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.9,
-        ease: "easeOut" as const,
-        type: "spring" as const,
-        stiffness: 120,
-        damping: 10,
-      },
-    },
-  };
+const PILLARS = [
+  {
+    icon: Code2,
+    title: "Technology",
+    share: 50,
+    desc: "Modern frameworks, scalable architectures and intelligent systems built for tomorrow's challenges.",
+  },
+  {
+    icon: Palette,
+    title: "Design",
+    share: 30,
+    desc: "Creative storytelling, visual identity and user experiences that connect and inspire.",
+  },
+  {
+    icon: LineChart,
+    title: "Strategy",
+    share: 20,
+    desc: "Data-driven insights, growth planning and optimisation that deliver measurable impact.",
+  },
+];
 
-  const fadeInLeft: Variants = {
-    hidden: { opacity: 0, x: -150, scale: 0.85 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut" as const,
-        type: "spring" as const,
-        stiffness: 130,
-        damping: 12,
-      },
-    },
-  };
+const STATS = [
+  { value: "100+", label: "Successful launches" },
+  { value: "75+", label: "Client partnerships" },
+  { value: "10+", label: "Years of expertise" },
+  { value: "5", label: "Industry recognitions" },
+];
 
-  const fadeInRight: Variants = {
-    hidden: { opacity: 0, x: 150, scale: 0.85 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut" as const,
-        type: "spring" as const,
-        stiffness: 130,
-        damping: 12,
-      },
-    },
-  };
+const BENEFITS = [
+  { icon: Clock, label: "Quick turnaround", desc: "24–48h response" },
+  { icon: MessagesSquare, label: "Expert consultation", desc: "No obligations" },
+  { icon: Target, label: "Dedicated team", desc: "Quality guaranteed" },
+  { icon: TrendingUp, label: "Growth focused", desc: "Long-term success" },
+];
 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+/* ---------- Panel 1: intro ---------- */
+function IntroPanel() {
+  const reduce = useReducedMotion();
+  return (
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6">
+      {/* Slow-orbiting rings */}
+      {[560, 820, 1080].map((size, i) => (
+        <motion.div
+          key={size}
+          aria-hidden="true"
+          className="absolute rounded-full border border-dashed border-zinc-300/70"
+          style={{ width: size, height: size }}
+          animate={reduce ? undefined : { rotate: i % 2 ? -360 : 360 }}
+          transition={{ duration: 60 + i * 20, repeat: Infinity, ease: "linear" }}
+        />
+      ))}
+      <div
+        className="absolute h-[520px] w-[520px] rounded-full bg-secondary/10 blur-3xl"
+        aria-hidden="true"
+      />
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = event;
-    setPosition({
-      x: (clientX / window.innerWidth - 0.5) * 200,
-      y: (clientY / window.innerHeight - 0.5) * 200,
-    });
-  };
-
-  const sections = [
-    {
-      id: "why-choose-us",
-      content: (
-        <div className="relative overflow-hidden min-h-screen w-full flex items-center justify-center px-4 sm:px-6 md:px-8">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 sm:-top-40 -right-20 sm:-right-40 w-[100vw] h-[400px] sm:h-[600px] md:h-[800px] rounded-full opacity-10"
-              style={{
-                background: `radial-gradient(circle, #DB1A1A 0%, transparent 70%)`,
-              }}
-            />
-            <div className="absolute -bottom-20 sm:-bottom-40 -left-20 sm:-left-40 w-[100vw] h-[300px] sm:h-[400px] md:h-[600px] rounded-full opacity-10"
-              style={{
-                background: `radial-gradient(circle, #F85C1E 0%, transparent 70%)`,
-              }}
-            />
-            
-            <div className="absolute top-10 sm:top-20 right-10 sm:right-20 w-16 h-16 sm:w-32 sm:h-32 rotate-45 border-2 border-secondary/20" />
-            <div className="absolute bottom-16 sm:bottom-32 left-10 sm:left-20 w-20 h-20 sm:w-40 sm:h-40 -rotate-12 border-2 border-lightMedium/20" />
-          </div>
-
-          <div className="relative z-10 text-center w-full max-w-7xl mx-auto">
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-              <div className="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent to-secondary" />
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-secondary animate-pulse" />
-              <div className="h-px w-12 sm:w-20 bg-gradient-to-l from-transparent to-secondary" />
-            </div>
-
-            <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl flex flex-wrap justify-center font-black leading-[0.9] sm:leading-[0.85] tracking-tight items-center gap-2 sm:gap-0">
-            <AnimatedSection1>
-                <span className="text-dark">Why Believe </span>
-                <span className="" style={{
-                  background: `linear-gradient(135deg, #DB1A1A 0%, #F85C1E 100%)`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}>
-                  in Us
-                </span>
-            </AnimatedSection1>
-          </h1>
-
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-3 sm:mt-4">
-              <div className="h-px w-16 sm:w-32 bg-gradient-to-r from-transparent to-lightMedium" />
-              <div className="w-2 h-2 sm:w-3 sm:h-3 rotate-45 border-2 border-secondary" />
-              <div className="h-px w-16 sm:w-32 bg-gradient-to-l from-transparent to-lightMedium" />
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "innovation",
-      content: (
-        <div className="flex flex-col md:flex-row items-center justify-center p-3 sm:p-4 md:p-5 lg:p-6 xl:p-8 min-h-screen w-full gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 relative overflow-hidden"
-          style={{
-            background: `linear-gradient(to bottom, #efefef 0%, #E0E0E0 100%)`,
-          }}
-        >
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-            style={{
-              backgroundImage: `repeating-linear-gradient(45deg, #161616 0px, #161616 2px, transparent 2px, transparent 50px)`,
-            }}
-          />
-
-          <div className="absolute top-10 sm:top-20 right-10 sm:right-20 w-16 h-16 sm:w-24 sm:h-24 rounded-full border-2 sm:border-4 border-secondary/30 animate-pulse" />
-          <div className="absolute bottom-10 sm:bottom-20 left-10 sm:left-20 w-20 h-20 sm:w-32 sm:h-32 rotate-45 border-2 sm:border-4 border-lightMedium/30" />
-
-          <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 relative z-10 px-2 sm:px-4">
-          <motion.div
-            className="w-full md:w-1/2 space-y-2 sm:space-y-2.5 md:space-y-3 lg:space-y-4 xl:space-y-5 relative z-10"
-            initial="hidden"
-            whileInView="visible"
+      <div className="relative text-center">
+        <Reveal>
+          <p className="eyebrow justify-center">Why CLAPIT</p>
+        </Reveal>
+        <div className="mt-6 overflow-hidden">
+          <motion.h2
+            initial={reduce ? { opacity: 0 } : { y: "110%" }}
+            whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            variants={fadeInRight}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-heading text-5xl font-semibold leading-[0.95] tracking-tight text-ink sm:text-7xl lg:text-8xl"
           >
-
-            <div className="inline-block relative">
-              <div className="absolute -inset-1 sm:-inset-2 bg-secondary/20 blur-xl rounded-full" />
-              <div className="relative bg-dark text-secondary px-3 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 md:py-3 lg:py-4 font-black text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em]"
-                style={{
-                  clipPath: "polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)",
-                }}
-              >
-            Why Believe in Us
-              </div>
-            </div>
-
-            <div className="space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-2.5">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-black leading-[1.1] text-dark">
-                Innovation Meets
-              </h1>
-              <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-3">
-                <div className="h-0.5 sm:h-1 w-6 sm:w-8 md:w-10 lg:w-12 bg-gradient-to-r from-secondary to-lightMedium rounded-full flex-shrink-0" />
-                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-black leading-[1.1]"
-                  style={{
-                    background: `linear-gradient(135deg, #DB1A1A 0%, #F85C1E 100%)`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Excellence
-            </h1>
-              </div>
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl 2xl:text-xl font-bold text-darkMedium">
-                Driven by Innovation
-              </h2>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -left-2 sm:-left-3 md:-left-6 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-secondary via-lightMedium to-transparent rounded-full" />
-              <p className="text-xs sm:text-sm md:text-base lg:text-sm xl:text-base text-medium leading-relaxed pl-2 sm:pl-3 md:pl-2">
-            Combining technical expertise with creative vision, we deliver solutions that not only meet your needs but exceed expectations and drive measurable results.
-            </p>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-2.5 pt-1.5 sm:pt-2 md:pt-2.5 w-full">
-              {["Web Development", "Mobile Apps", "Cloud Solutions"].map((platform) => (
-                <button key={platform}
-                  className="group px-2.5 sm:px-3 md:px-4 lg:px-6 py-1.5 sm:py-2 md:py-3 bg-dark text-primary font-bold text-[10px] sm:text-xs md:text-sm lg:text-base rounded-full relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl flex-shrink"
-                  style={{
-                    boxShadow: `0 4px 20px rgba(219, 26, 26, 0.2)`,
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary to-lightMedium opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10 whitespace-nowrap">{platform}</span>
-              </button>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="w-full md:w-1/2 space-y-2 sm:space-y-2.5 md:space-y-3 lg:space-y-3.5 xl:space-y-4 relative z-10"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInLeft}
-          >
-            {[
-              { percent: "50%", title: "Technology", desc: "Modern frameworks, scalable architectures, and intelligent systems built for tomorrow's challenges." },
-              { percent: "30%", title: "Design", desc: "Creative storytelling, visual identity, and user experiences that connect and inspire." },
-              { percent: "20%", title: "Strategy", desc: "Data-driven insights, growth planning, and optimization strategies that deliver real impact." }
-            ].map((item, idx) => (
-              <div key={idx} className="group">
-                <div className="bg-primary rounded-lg sm:rounded-xl md:rounded-2xl lg:rounded-3xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-5 transition-all duration-300 hover:shadow-2xl relative overflow-hidden w-full"
-                  style={{
-                    border: `2px solid ${idx === 0 ? '#DB1A1A' : idx === 1 ? '#F85C1E' : '#9B9FA6'}`,
-                  }}
-                >
-                  <div className="absolute top-2 sm:top-2.5 md:top-3 lg:top-4 right-2 sm:right-2.5 md:right-3 lg:right-4 w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-full flex items-center justify-center font-black text-xs sm:text-sm md:text-lg lg:text-2xl text-primary"
-                    style={{
-                      background: `linear-gradient(135deg, ${idx === 0 ? '#DB1A1A' : idx === 1 ? '#F85C1E' : '#54565A'} 0%, ${idx === 0 ? '#F85C1E' : idx === 1 ? '#DB1A1A' : '#9B9FA6'} 100%)`,
-                    }}
-                  >
-                    {item.percent}
-              </div>
-
-                  <div className="pr-10 sm:pr-12 md:pr-14 lg:pr-16">
-                    <h4 className="text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-black text-dark mb-0.5 sm:mb-1 md:mb-1.5 lg:mb-2">
-                      {item.title}
-                </h4>
-                    <p className="text-[10px] sm:text-xs md:text-sm lg:text-xs xl:text-sm text-medium leading-relaxed">
-                      {item.desc}
-                </p>
-              </div>
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-              </div>
-            ))}
-          </motion.div>
-          </div>
+            Why believe <span className="text-secondary">in us</span>
+          </motion.h2>
         </div>
-      ),
-    },
-    {
-      id: "project",
-      content: (
-        <motion.section
-          className="flex flex-col lg:flex-row justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 items-center p-3 sm:p-4 md:p-5 lg:p-6 xl:p-8 min-h-screen w-full relative overflow-hidden"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeInRight}
-          style={{
-            background: `linear-gradient(135deg, #161616 0%, #54565A 50%, #161616 100%)`,
-          }}
-        >
-          <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-            style={{
-              backgroundImage: `linear-gradient(#DB1A1A 1px, transparent 1px), linear-gradient(90deg, #DB1A1A 1px, transparent 1px)`,
-              backgroundSize: "80px 80px",
-            }}
-          />
+        <Reveal delay={0.25}>
+          <p className="mx-auto mt-8 max-w-xl text-lg text-zinc-600">
+            A decade of shipping products for startups and enterprises — here&apos;s
+            what sets our team apart.
+          </p>
+        </Reveal>
+        <Reveal delay={0.4} className="mt-10 hidden items-center justify-center gap-3 text-sm font-medium text-zinc-500 lg:flex">
+          Keep scrolling
+          <motion.span
+            animate={reduce ? undefined : { x: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowRight className="h-4 w-4 text-secondary" aria-hidden="true" />
+          </motion.span>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
 
-          <div className="flex flex-col space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 xl:space-y-8 w-full lg:w-1/2 relative z-10">
-            <div className="space-y-1.5 sm:space-y-2 md:space-y-2.5 lg:space-y-3">
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 md:gap-4">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-secondary to-lightMedium flex items-center justify-center">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full bg-dark" />
+/* ---------- Panel 2: pillars ---------- */
+function PillarsPanel() {
+  return (
+    <div className="container grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-0">
+      <div>
+        <Reveal>
+          <p className="eyebrow mb-4">Innovation meets excellence</p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <h3 className="font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl">
+            Driven by <span className="text-secondary">innovation</span>, built on craft
+          </h3>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-zinc-600">
+            Combining technical expertise with creative vision, we deliver
+            solutions that don&apos;t just meet your needs — they exceed
+            expectations and drive measurable results.
+          </p>
+        </Reveal>
+        <RevealGroup className="mt-8 flex flex-wrap gap-2" delay={0.3}>
+          {["Web Development", "Mobile Apps", "Cloud Solutions", "AI Integration"].map((t) => (
+            <RevealItem key={t}>
+              <span className="inline-flex rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-secondary hover:text-secondary">
+                {t}
+              </span>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </div>
+
+      <RevealGroup className="grid gap-4" stagger={0.12}>
+        {PILLARS.map((p) => (
+          <RevealItem key={p.title}>
+            <div className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-secondary/40 hover:shadow-card-hover">
+              <div className="flex items-start gap-5">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-brand-50 text-secondary transition-colors duration-300 group-hover:bg-secondary group-hover:text-white">
+                  <p.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
-                <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-black uppercase text-secondary tracking-[0.1em] sm:tracking-[0.2em]">
-            Why Believe in Us
-            </h3>
+                <div className="flex-1">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h4 className="text-lg font-semibold text-ink">{p.title}</h4>
+                    <span className="font-heading text-2xl font-semibold text-secondary">
+                      <CountUp value={`${p.share}%`} />
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-600">{p.desc}</p>
+                  {/* Share-of-focus bar fills on reveal */}
+                  <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-secondary to-lightMedium"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${p.share}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    />
+                  </div>
+                </div>
               </div>
-              </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 w-full">
-              {[
-                { value: "100+", label: "Successful launches", position: "top-left" },
-                { value: "75+", label: "Client partnerships", position: "top-right" },
-                { value: "10+", label: "Years of expertise", position: "bottom-left" },
-                { value: "5", label: "Industry recognitions", position: "bottom-right" },
-              ].map((stat, index) => (
-                <div key={index} className="group relative min-w-0">
-                  <div className="bg-background rounded-lg sm:rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-5 h-full transition-all duration-300 group-hover:bg-light relative overflow-hidden w-full min-w-0"
-                    style={{
-                      border: "2px solid #E0E0E0",
-                      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <div className="absolute top-0 right-0 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-24 lg:h-24 bg-gradient-to-bl from-secondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <div className="pr-0 sm:pr-2 md:pr-3">
-                      <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-black mb-0.5 sm:mb-1 md:mb-1.5 lg:mb-2 leading-tight"
-                        style={{
-                          background: `linear-gradient(135deg, #DB1A1A 0%, #F85C1E 100%)`,
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                        }}
-                      >
-                        {stat.value}
-                </h2>
-                    </div>
-                    <p className="text-darkMedium text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base font-semibold break-words leading-tight">{stat.label}</p>
-
-                    <div className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full bg-gradient-to-r from-secondary to-lightMedium transition-all duration-500" />
-              </div>
-              </div>
-              ))}
             </div>
-          </div>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </div>
+  );
+}
 
-          <div className="relative w-full lg:w-1/2 flex justify-center mt-4 lg:mt-0">
-            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-              <div className="absolute -inset-3 sm:-inset-4 md:-inset-6 bg-gradient-to-br from-secondary/30 to-lightMedium/30 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] blur-xl sm:blur-2xl" />
-              
-              <div className="relative bg-background rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] p-3 sm:p-4 md:p-6 overflow-hidden"
-                style={{
-                  border: "3px solid #E0E0E0",
-                  boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-                }}
-              >
-                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 border-t-2 sm:border-t-4 border-l-2 sm:border-l-4 border-secondary rounded-tl-xl sm:rounded-tl-2xl" />
-                <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 border-b-2 sm:border-b-4 border-r-2 sm:border-r-4 border-lightMedium rounded-br-xl sm:rounded-br-2xl" />
-                
+/* ---------- Panel 3: proof ---------- */
+function ProofPanel() {
+  return (
+    <div className="relative flex h-full w-full items-center overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:64px_64px]"
+        aria-hidden="true"
+      />
+      <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-secondary/25 blur-3xl" aria-hidden="true" />
+
+      <div className="container relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-0">
+        <div>
+          <Reveal>
+            <p className="eyebrow mb-4">Proven results</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h3 className="font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl">
+              Numbers that speak for themselves
+            </h3>
+          </Reveal>
+          <RevealGroup className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10" stagger={0.1}>
+            {STATS.map((s) => (
+              <RevealItem key={s.label} className="bg-ink p-6 transition-colors duration-300 hover:bg-ink-800">
+                <span className="block font-heading text-4xl font-semibold text-white sm:text-5xl">
+                  <CountUp value={s.value} />
+                </span>
+                <span className="mt-2 block text-sm text-zinc-400">{s.label}</span>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+
+        <Reveal delay={0.15} y={40} className="relative mx-auto w-full max-w-lg">
+          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-secondary/40 to-lightMedium/20 blur-2xl" aria-hidden="true" />
+          <motion.div
+            whileHover={{ rotate: -1, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 200, damping: 18 }}
+            className="relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/5 p-3 backdrop-blur"
+          >
             <Image
               src={IMAGES.Scroll}
-              alt="Our Work Showcase"
-              width={600}
-              height={600}
-                  className="object-cover rounded-[1rem] sm:rounded-[1.5rem] md:rounded-[2rem] relative z-10 w-full h-auto"
+              alt="A selection of apps and brands designed by CLAPIT"
+              width={640}
+              height={640}
+              className="h-auto w-full rounded-[1.25rem]"
             />
-              </div>
+          </motion.div>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
 
-              <div className="absolute -top-4 -right-4 sm:-top-8 sm:-right-8 w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-secondary/30 animate-pulse" />
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-8 sm:-left-8 w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-lightMedium/30 animate-pulse" style={{ animationDelay: "1s" }} />
-            </div>
-          </div>
-        </motion.section>
-      ),
-    },
-    {
-      id: "Contect",
-      content: (
-        <div className="w-full bg-black relative overflow-hidden min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8"
-         
-        >
-          <div className="absolute inset-0 opacity-10 pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 rounded-full border-2 border-secondary" />
-            <div className="absolute bottom-1/4 right-1/4 w-40 h-40 sm:w-56 sm:h-56 md:w-80 md:h-80 rounded-full border-2 border-lightMedium" />
-            
-            <div className="absolute top-20 right-20 sm:top-40 sm:right-40 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 rotate-45 border-2 border-secondary/50" />
-            <div className="absolute bottom-20 left-20 sm:bottom-40 sm:left-40 w-20 h-20 sm:w-32 sm:h-32 md:w-40 md:h-40 -rotate-12 border-2 border-lightMedium/50" />
-          </div>
+/* ---------- Panel 4: call to action ---------- */
+function CtaPanel() {
+  return (
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden px-6 py-20 lg:py-0">
+      <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10" aria-hidden="true" />
+      <div className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" aria-hidden="true" />
 
-          <motion.section
-            className="flex flex-col justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 items-center p-3 sm:p-4 md:p-5 lg:p-6 xl:p-8 relative z-10 max-w-6xl w-full"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <div className="relative w-full">
-              <div className="absolute inset-0 bg-secondary/30 blur-2xl sm:blur-3xl rounded-full" />
-              <div className="relative bg-dark px-4 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-4 md:py-5 font-black text-sm sm:text-base md:text-lg lg:text-base xl:text-lg uppercase tracking-wider text-center"
-                style={{
-                  clipPath: "polygon(0 0, 100% 0, 95% 100%, 5% 100%)",
-                  color: "#DB1A1A",
-                }}
-              >
-              Ready to get started?
-              </div>
-            </div>
+      <div className="relative flex max-w-4xl flex-col items-center text-center">
+        <Reveal>
+          <p className="eyebrow">Ready to get started?</p>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <h3 className="mt-5 font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+            Let&apos;s build something{" "}
+            <span className="bg-gradient-to-r from-secondary to-lightMedium bg-clip-text text-transparent">
+              extraordinary
+            </span>{" "}
+            together
+          </h3>
+        </Reveal>
 
-            <div className="text-center space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-1 w-full">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-black leading-[1] text-light">
-                Let&apos;s build something
-              </h1>
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-black leading-[1]"
-                style={{
-                  background: `linear-gradient(135deg, #DB1A1A 0%, #F85C1E 50%, #DB1A1A 100%)`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                extraordinary together!
-            </h1>
-            </div>
+        <RevealGroup className="mt-10 grid w-full max-w-3xl grid-cols-2 gap-3 md:grid-cols-4" stagger={0.08} delay={0.2}>
+          {BENEFITS.map((b) => (
+            <RevealItem key={b.label}>
+              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors duration-300 hover:border-secondary/50 hover:bg-white/[0.07]">
+                <b.icon className="h-5 w-5 text-secondary" aria-hidden="true" />
+                <p className="mt-3 text-sm font-semibold text-white">{b.label}</p>
+                <p className="mt-0.5 text-xs text-zinc-400">{b.desc}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
 
-            <div className="w-full max-w-xl mx-auto space-y-2 sm:space-y-3 md:space-y-3">
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
-                {[
-                  { icon: "⚡", label: "Quick Turnaround", desc: "24-48h response" },
-                  { icon: "💬", label: "Expert Consultation", desc: "No obligations" },
-                  { icon: "🎯", label: "Dedicated Team", desc: "Quality guaranteed" },
-                  { icon: "🚀", label: "Growth Focused", desc: "Long-term success" },
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-dark/40 backdrop-blur-sm rounded-md sm:rounded-lg md:rounded-xl p-1.5 sm:p-2 md:p-2.5 lg:p-3 text-center border border-secondary/20 hover:border-secondary/40 transition-all duration-300"
-                    whileHover={{ scale: 1.03, y: -2 }}
-                  >
-                    <div className="text-base sm:text-lg md:text-xl lg:text-2xl mb-0.5 sm:mb-1">{item.icon}</div>
-                    <h3 className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-bold text-primary mb-0.5">{item.label}</h3>
-                    <p className="text-[8px] sm:text-[9px] md:text-[10px] text-medium leading-tight">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+        <Reveal delay={0.35} className="mt-4">
+          <MagneticButton href="/contact-us" />
+        </Reveal>
+      </div>
+    </div>
+  );
+}
 
-            <motion.div
-              className="relative"
-              style={{ position: "relative" }}
-              onMouseMove={(e) => handleMouseMove(e)}
-              animate={{ x: position.x, y: position.y }}
-              transition={{ type: "spring", stiffness: 100, damping: 10 }}
-            >
-              <div className="absolute -inset-3 sm:-inset-4 md:-inset-6 lg:-inset-8 bg-gradient-to-r from-secondary/40 to-lightMedium/40 rounded-full blur-lg sm:blur-xl md:blur-2xl animate-pulse" />
-              
-              <Link href="/contact-us">
-                <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-48 lg:h-48 flex flex-col items-center justify-center gap-0.5 sm:gap-1.5 md:gap-2 lg:gap-3 rounded-full cursor-pointer group"
-                  style={{
-                    background: `linear-gradient(135deg, #DB1A1A 0%, #F85C1E 100%)`,
-                    boxShadow: "0 14px 42px rgba(219, 26, 26, 0.35)",
-                  }}
-                >
-                  <div className="absolute inset-1.5 sm:inset-2 md:inset-3 rounded-full bg-dark/20 group-hover:bg-dark/0 transition-all duration-300" />
-                  
-                  <span className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg font-black text-primary relative z-10 text-center px-1 sm:px-1.5 md:px-3 group-hover:scale-110 transition-transform leading-tight">
-                    Get<br/>in Touch
-                  </span>
-                  <RightLongArrowIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 xl:h-7 xl:w-7 2xl:h-8 2xl:w-8 text-primary relative z-10 group-hover:translate-x-2 transition-transform" />
-                  
-                  <div className="absolute inset-0 rounded-full border-2 sm:border-2 md:border-[3px] border-dashed border-primary/30 animate-spin" style={{ animationDuration: "10s" }} />
-                </div>
-              </Link>
-            </motion.div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5 mt-3 sm:mt-4 md:mt-5">
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-medium">
-                <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-                <span>75+ trusted partners</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-medium">
-                <div className="w-2 h-2 rounded-full bg-lightMedium animate-pulse" style={{ animationDelay: "0.5s" }} />
-                <span>Decade of excellence</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-medium">
-                <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" style={{ animationDelay: "1s" }} />
-                <span>100+ successful projects</span>
-              </div>
-            </div>
-          </motion.section>
-        </div>
-      ),
-    },
+export default function WhyChooseUs() {
+  const sections = [
+    { id: "why-intro", className: "bg-background", content: <IntroPanel /> },
+    { id: "why-pillars", className: "bg-white", content: <PillarsPanel /> },
+    { id: "why-proof", className: "bg-ink", content: <ProofPanel /> },
+    { id: "why-cta", className: "bg-black", content: <CtaPanel /> },
   ];
 
-  return <HorizontalScroll sections={sections} />;
+  return <HorizontalScroll sections={sections} label="Why believe in CLAPIT" />;
 }

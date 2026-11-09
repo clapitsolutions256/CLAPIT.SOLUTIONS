@@ -1,23 +1,16 @@
-import localFont from "next/font/local";
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 
-export const futura = localFont({
-  src: [
-    {
-      path: "../styles/fonts/futura/Futura Book font.ttf",
-      weight: "400",
-      style: "normal",
-    }
-  ],
-  variable: "--font-futura",
+// Headings: geometric, technical character. Body: highly readable sans.
+export const heading = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-heading",
   display: "swap",
-  preload: false,
-  fallback: ['Arial', 'sans-serif'],
 });
 
-export const mont = localFont({
-  src: "../styles/fonts/mont/Mont-HeavyDEMO.otf",
-  variable: "--font-mont",
+export const body = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
   display: "swap",
-  preload: false,
-  fallback: ['Helvetica', 'sans-serif'],
 });

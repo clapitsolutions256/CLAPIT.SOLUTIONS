@@ -4,7 +4,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
   {
     defaultVariants: {
       size: 'default',
@@ -13,18 +13,21 @@ const buttonVariants = cva(
     variants: {
       size: {
         clear: '',
-        default: 'h-10 px-4 py-2',
-        icon: 'h-10 w-10',
-        lg: 'h-11 rounded px-8',
-        sm: 'h-9 rounded px-3',
+        default: 'h-11 px-5',
+        icon: 'h-11 w-11',
+        lg: 'h-12 px-7 text-base',
+        sm: 'h-9 px-4',
       },
       variant: {
-        default: 'bg-primary text-primary-foreground light:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground light:bg-destructive/90',
-        ghost: 'light:bg-card light:text-accent-foreground',
-        link: 'text-primary items-start justify-start underline-offset-4 light:underline',
-        outline: 'border border-border bg-background light:bg-card light:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground light:bg-secondary/80',
+        // Brand red: the one primary action per view
+        default: 'bg-secondary text-white hover:bg-brand-600',
+        dark: 'bg-ink text-white hover:bg-ink-700',
+        outline: 'border border-zinc-300 bg-white text-ink hover:border-ink hover:bg-zinc-50',
+        'outline-light': 'border border-white/30 bg-white/5 text-white backdrop-blur hover:bg-white/15',
+        ghost: 'text-ink hover:bg-zinc-100',
+        link: 'h-auto px-0 text-secondary underline-offset-4 hover:underline',
+        secondary: 'bg-secondary text-white hover:bg-brand-600',
+        destructive: 'bg-red-600 text-white hover:bg-red-700',
       },
     },
   },
@@ -46,7 +49,7 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const Comp = asChild ? Slot : 'button'
-  return <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
+  return <Comp className={cn(buttonVariants({ size, variant }), className)} ref={ref} {...props} />
 }
 
 export { Button, buttonVariants }

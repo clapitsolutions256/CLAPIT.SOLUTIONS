@@ -1,126 +1,53 @@
 "use client";
 
 import { stats } from "@/data/stats";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import SectionHeading from "../ui/SectionHeading";
 
 export default function Stats() {
   return (
-    <section className="relative py-16 md:py-24 lg:mx-16 mx-4 mt-10">
-      <div className="absolute inset-0 rounded-3xl overflow-hidden bg-gradient-to-br from-black via-[#0a0a0a] to-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(250,158,137,0.1)_0%,transparent_70%)]" />
-      </div>
+    <section className="bg-ink">
+      <div className="container section relative">
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/60 to-transparent"
+          aria-hidden="true"
+        />
+        <SectionHeading
+          tone="dark"
+          eyebrow="How we work"
+          title="A team built around your outcomes"
+          description="Small senior teams, transparent process and a relentless focus on the results that matter to your business."
+        />
 
-      <div className="relative container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+        <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
-            <StatCard key={stat.label} stat={stat} index={index} />
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden bg-ink p-7 transition-colors duration-300 hover:bg-ink-800"
+            >
+              <span
+                className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-secondary to-lightMedium transition-transform duration-500 group-hover:scale-x-100"
+                aria-hidden="true"
+              />
+              <span
+                className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-secondary/0 blur-2xl transition-colors duration-500 group-hover:bg-secondary/20"
+                aria-hidden="true"
+              />
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 transition-all duration-300 group-hover:scale-110 group-hover:border-secondary/50 [&_svg]:text-secondary">
+                {stat.icon}
+              </div>
+              <h3 className="relative mt-6 text-lg font-semibold text-white">{stat.label}</h3>
+              <p className="relative mt-2 text-[15px] leading-relaxed text-zinc-400">
+                {stat.description}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function StatCard({ stat, index }: { stat: { label: string; icon: React.ReactNode; description: string }; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isInView ? 1 : 0 }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative"
-    >
-      <div className="relative h-full p-5 md:p-6 rounded-xl bg-black/60 border border-white/10 backdrop-blur-xl overflow-hidden transition-all duration-500 hover:border-white/20 hover:bg-black/80">
-        <motion.div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-          style={{
-            background: 'linear-gradient(135deg, rgba(250, 158, 137, 0.1) 0%, transparent 50%)',
-          }}
-        />
-
-        <motion.div
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100"
-          animate={{
-            boxShadow: isHovered 
-              ? "0 0 30px rgba(250, 158, 137, 0.2)"
-              : "0 0 0px rgba(250, 158, 137, 0)",
-          }}
-          transition={{ duration: 0.3 }}
-        />
-
-        <motion.div
-          className="absolute top-0 left-0 h-0.5 bg-gradient-to-r from-secondary via-white to-secondary"
-          initial={{ width: 0 }}
-          animate={{ width: isHovered ? "100%" : 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
-
-        <div className="relative z-10 flex flex-col h-full">
-          <motion.div
-            className="mb-4"
-            animate={{
-              scale: isHovered ? [1, 1.1, 1] : 1,
-            }}
-            transition={{
-              duration: 0.5,
-              ease: "easeInOut",
-            }}
-          >
-            <motion.div
-              className="relative w-11 h-11 md:w-12 md:h-12 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-sm"
-              animate={{
-                backgroundColor: isHovered 
-                  ? "rgba(250, 158, 137, 0.2)" 
-                  : "rgba(255, 255, 255, 0.1)",
-                borderColor: isHovered 
-                  ? "rgba(250, 158, 137, 0.4)" 
-                  : "rgba(255, 255, 255, 0.2)",
-                boxShadow: isHovered 
-                  ? "0 8px 24px rgba(250, 158, 137, 0.2)"
-                  : "0 4px 12px rgba(0, 0, 0, 0.2)",
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="text-white">
-                {stat.icon}
-              </div>
-            </motion.div>
-          </motion.div>
-
-          <div className="flex-grow space-y-2">
-            <motion.h3
-              className="text-lg md:text-xl font-bold text-light leading-snug"
-              animate={{
-                color: isHovered ? "rgb(250, 158, 137)" : "rgb(255, 255, 255)",
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              {stat.label}
-            </motion.h3>
-            <motion.p
-              className="text-sm md:text-base text-white/70 leading-snug"
-              animate={{
-                color: isHovered ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.7)",
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              {stat.description}
-            </motion.p>
-          </div>
-
-          <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-secondary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </div>
-      </div>
-    </motion.div>
   );
 }

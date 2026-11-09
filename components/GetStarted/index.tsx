@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import { steps } from "@/data/getStarted";
-import AnimatedSection1 from "../AnimatedSection1";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
+import SectionHeading from "../ui/SectionHeading";
+import { Button } from "../ui/button";
 
 interface Industry {
   icon: string | ReactNode;
@@ -21,7 +23,7 @@ interface TechStack {
 
 interface GetStartedProps {
   data?: TechStack;
-  bgColor: string;
+  bgColor?: string;
   button: boolean;
 }
 
@@ -29,86 +31,62 @@ export default function GetStarted({ data, bgColor, button }: GetStartedProps) {
   const { heading, paragraph, industries } = data || steps;
 
   const CardContent = ({ icon, title, description }: Industry) => (
-    <div className="relative z-10">
-      <div className="flex items-center gap-2 relative z-10 mb-3">
-        <div className="text-dark group-hover:text-white text-2xl md:text-3xl font-bold w-10 h-10 md:w-11 md:h-11 min-w-[2.5rem] min-h-[2.5rem] md:min-w-[2.75rem] md:min-h-[2.75rem] flex items-center justify-center rounded-full bg-dark/10 group-hover:bg-dark/20 transition-all duration-300 relative">
-          <span className="relative z-20 block leading-none">{icon}</span>
-        </div>
+    <>
+      <span
+        className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-secondary to-lightMedium transition-transform duration-500 group-hover:scale-x-100"
+        aria-hidden="true"
+      />
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 font-heading text-lg font-semibold text-secondary transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary group-hover:text-white [&_svg]:h-5 [&_svg]:w-5">
+        {icon}
       </div>
-      <h3 className="text-base md:text-lg font-semibold text-dark group-hover:text-white mb-1.5 leading-snug relative z-10 transition-colors duration-300">
-        {title}
-      </h3>
-      <p className="text-dark group-hover:text-white text-sm md:text-base leading-snug relative z-10 transition-colors duration-300">
-        {description}
-      </p>
-    </div>
+      <h3 className="mt-5 text-base font-semibold leading-snug text-ink sm:text-lg">{title}</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-zinc-600">{description}</p>
+    </>
   );
 
+  const cardClass =
+    "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:shadow-card-hover";
+
   return (
-    <section
-      className="py-16 md:py-24 m-6 rounded-2xl container mx-auto"
-      style={{ backgroundColor: bgColor }}
-    >
-      <div className="">
-        <div className="flex justify-between items-center px-12 ">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-dark flex items-center gap-2"
-          >
-            {heading}
+    <section className="section" style={{ backgroundColor: bgColor || "#fff" }}>
+      <div className="container">
+        <SectionHeading
+          eyebrow={button ? "Our process" : undefined}
+          title={heading}
+          description={paragraph}
+          action={
+            button ? (
+              <Button asChild variant="outline">
+                <Link href="/pricing">
+                  See our plans
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            ) : undefined
+          }
+        />
 
-          </motion.h2>
-          {button && (
-            <Link href="/pricing">
-              <div className="text-dark lg:block hidden  text-lg border border-dark rounded-full px-4 py-2 cursor-pointer hover:bg-dark hover:text-primary transition-all duration-300">
-                see our plans
-              </div>
-            </Link>
-          )}
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mt-4 lg:text-xl text-lg text-dark px-12"
-        >
-          {paragraph}
-        </motion.p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 px-12 mt-8 md:mt-10">
+        <ol className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {industries.map(({ icon, title, description, href }, index) => (
-            <motion.div
+            <motion.li
               key={index}
-              className="bg-light p-4 md:p-5 rounded-xl border border-dark/20 hover:border-primary transition-all duration-300 relative group overflow-hidden"
+              initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: (index % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
-                style={{
-                  backgroundImage: `url(/gif/ff.gif)`,
-                  backgroundSize: "cover",
-                }}
-              ></div>
               {href && href.trim() !== "" && href !== "#" ? (
-                <Link href={href}>
-                  <CardContent
-                    icon={icon}
-                    title={title}
-                    description={description}
-                  />
+                <Link href={href} className={cardClass}>
+                  <CardContent icon={icon} title={title} description={description} />
                 </Link>
               ) : (
-                <CardContent
-                  icon={icon}
-                  title={title}
-                  description={description}
-                />
+                <div className={cardClass}>
+                  <CardContent icon={icon} title={title} description={description} />
+                </div>
               )}
-            </motion.div>
+            </motion.li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );

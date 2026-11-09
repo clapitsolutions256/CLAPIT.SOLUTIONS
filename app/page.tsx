@@ -49,11 +49,9 @@ export default function Home() {
       <CaseStudyScroll />
       <WhatOurClientSay />
       <GetStarted data={steps} bgColor={"#fff"} button={true} />
-      <div className="px-4 md:px-8">
-        <ContactUs />
-      </div>
       <FAQSection title={faq.title} subtitle={faq.subtitle} faqs={faq.faqs} />
       <Blogs limit={3} />
+      <ContactUs />
     </div>
   );
 }

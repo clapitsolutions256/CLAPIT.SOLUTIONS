@@ -1,86 +1,89 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { IMAGES } from "@/public/images";
+import { ArrowRight, Clock, MessagesSquare, Target, TrendingUp } from "lucide-react";
 
+const BENEFITS = [
+  { icon: Clock, label: "Quick turnaround", desc: "Reply within 24–48 hours" },
+  { icon: MessagesSquare, label: "Expert consultation", desc: "No obligations" },
+  { icon: Target, label: "Dedicated team", desc: "Quality guaranteed" },
+  { icon: TrendingUp, label: "Growth focused", desc: "Built for long-term success" },
+];
+
+/** Closing call-to-action banner, reused across pages. */
 export default function ContactUs() {
   return (
-    <section className="container  relative bg-gradient-to-br from-[#fff] to-secondary/5 py-10 md:py-5 overflow-hidden rounded-3xl mx-auto my-8">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
-          <div className="w-full lg:w-1/2 mb-8 lg:mb-0 ml-8">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-medium text-lg font-medium mb-8 block"
-            >
-              LETS WORK TOGETHER
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary mb-8"
-            >
-              Contact Us
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-medium text-lg mb-8 max-w-lg lg:text-xl "
-            >
-              Know what you want? Great. Got questions? Even better.
-            </motion.p>
-            <motion.a
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              href="/contact-us"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-primary bg-secondary rounded-full light:bg-[#fbd5ce] light:text-secondary transition-colors"
-            >
-              Get in Touch
-              <svg
-                className="w-5 h-5 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </motion.a>
-          </div>
+    <section className="py-16 md:py-20">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.45 }}
+          className="relative overflow-hidden rounded-3xl bg-ink px-6 py-12 sm:px-12 sm:py-16 lg:px-16"
+        >
+          <div
+            className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-secondary/30 blur-3xl"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]"
+            aria-hidden="true"
+          />
 
-          <div className="w-full lg:w-1/2 relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative w-full h-[300px] md:h-[400px]"
+          <div className="relative grid items-center gap-12 lg:grid-cols-2">
+            <div>
+              <p className="eyebrow mb-4">Let&apos;s work together</p>
+              <h2 className="font-heading text-3xl font-semibold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
+                Let&apos;s build something extraordinary together
+              </h2>
+              <p className="mt-5 max-w-lg text-lg leading-relaxed text-zinc-400">
+                Know what you want? Great. Got questions? Even better. Tell us
+                about your project and we&apos;ll get back with a clear plan.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/contact-us"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 text-base font-semibold text-white transition-colors hover:bg-brand-600"
+                >
+                  Get in touch
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex h-12 items-center justify-center rounded-lg border border-white/20 px-7 text-base font-semibold text-white transition-colors hover:bg-white/10"
+                >
+                  View pricing
+                </Link>
+              </div>
+            </div>
+
+            <motion.ul
+              className="grid gap-3 sm:grid-cols-2"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } } }}
             >
-              <Image
-                src={IMAGES.CtaContact}
-                alt="Contact illustration"
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain"
-                priority
-              />
-            </motion.div>
+              {BENEFITS.map((b) => (
+                <motion.li
+                  key={b.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
+                    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+                  }}
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur transition-colors duration-300 hover:border-secondary/50 hover:bg-white/[0.06]"
+                >
+                  <b.icon className="h-6 w-6 text-secondary transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
+                  <p className="mt-4 font-semibold text-white">{b.label}</p>
+                  <p className="mt-1 text-sm text-zinc-400">{b.desc}</p>
+                </motion.li>
+              ))}
+            </motion.ul>
           </div>
-        </div>
+        </motion.div>
       </div>
-
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFE5A3] rounded-full -translate-y-1/2 translate-x-1/2 opacity-50" />
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#FFE5A3] rounded-full translate-y-1/2 -translate-x-1/2 opacity-50" />
     </section>
   );
 }

@@ -3,11 +3,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
+import FloatingContactButton from "@/components/FloatingContactButton";
 import CustomCursor from "@/components/CustomCursor";
 import Loader from "@/components/Loading";
-import FloatingContactButton from "@/components/FloatingContactButton";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { futura, mont } from "./font";
+import { heading, body } from "./font";
 import { Analytics } from "@vercel/analytics/next"
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
   },
   category: "Technology",
   other: {
-    "theme-color": "#000000",
+    "theme-color": "#FFFFFF",
   },
 };
 
@@ -161,7 +161,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${futura.variable} ${mont.variable} antialiased overflow-x-hidden`}
+        className={`${heading.variable} ${body.variable} font-sans antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
         <script
@@ -173,9 +173,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <Loader />
-        <div className="lg:block md:block hidden">
-          <CustomCursor />
-        </div>
+        <CustomCursor />
         <SmoothScroll>
           <Header />
           <main className="min-h-screen">{children}</main>
